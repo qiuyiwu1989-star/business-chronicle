@@ -11,7 +11,7 @@
 ## 约定
 - **所有内容数据只住在 `data.v22.js`**，渲染逻辑只住在 `app.v22.js`，两者不混。
 - 数据结构：THEORIES(34) / COMPANIES(48) / MODELS(29) / ORGS(19) / THEORY_DETAILS / THEORY_GUIDES / THEORY_LIMITS / GLOSSARY / ERAS / PEOPLE / QUIZ / SCENARIOS / GRAPH_* / ELEMENTS。
-- 中文正文用中文标点；`rel` 字段用 THEORIES 的 `key` 精确串联跨线关系。
+- 数据正文沿用现有半角逗号/分号风格（历史遗留，全量统一标点属单独任务，勿零散混改）；`rel` 字段用 THEORIES 的 `key` 精确串联跨线关系。
 - 改版本号（v22 → v23）才动文件名，日常打磨不改名。
 
 ## 红线

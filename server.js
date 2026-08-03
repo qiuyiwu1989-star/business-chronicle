@@ -43,9 +43,13 @@ const server = http.createServer((req, res) => {
 
   fs.readFile(file, (err, data) => {
     if (err) return send(res, 404, "Not Found");
+    // 本地开发默认 no-store;部署环境设 CACHE=1 恢复强缓存
+    const strongCache = process.env.CACHE === "1";
     res.writeHead(200, {
       "Content-Type": types[path.extname(file).toLowerCase()] || "application/octet-stream",
-      "Cache-Control": file.endsWith("index.html") ? "no-store" : "public, max-age=31536000, immutable"
+      "Cache-Control": !strongCache || file.endsWith("index.html")
+        ? "no-store"
+        : "public, max-age=31536000, immutable"
     });
     if (req.method === "HEAD") return res.end();
     res.end(data);

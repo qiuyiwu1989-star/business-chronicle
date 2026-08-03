@@ -297,6 +297,23 @@ function guideCard(title, text, tone = "") {
   return text ? `<div class="guide-card ${tone}"><b>${title}</b><p>${text}</p></div>` : "";
 }
 
+/* ---------- 决策现场层(spec 001):有 deep 的节点用真实史实替代通用边界段 ---------- */
+function decisionSection(dp) {
+  return `<div class="m-sec"><h4>决策现场</h4>
+    <div class="guide-grid">
+      ${guideCard("当时的局面", dp.scene)}
+      ${guideCard("关键抉择", dp.choice, "accent")}
+    </div>
+  </div>
+  <div class="m-sec"><h4>对照与回声</h4>
+    <div class="guide-grid">
+      ${guideCard("同时代的对照", dp.rival, "warn")}
+      ${guideCard("后续命运", dp.fate, "danger")}
+      ${guideCard("今日回声", dp.echo, "accent")}
+    </div>
+  </div>`;
+}
+
 /* ---------- 学派筛选 chips(时间线与卡片共用) ---------- */
 function buildChips(container, onPick) {
   const all = [["all", "全部", "#5A4FE6"]].concat(
@@ -403,7 +420,7 @@ function deepSections(o, briefTitle, kind) {
         ${o.lesson ? `<div><b>可迁移原则</b><span>${o.lesson}</span></div>` : ""}
       </div>
     </div>
-    ${boundarySection(kind, o)}
+    ${o.deep ? decisionSection(o.deep) : boundarySection(kind, o)}
     ${rel ? `<div class="m-sec"><h4>理论关联解释</h4><div class="rel-card-grid">${rel}</div></div>` : ""}`;
 }
 
