@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商业通鉴 · 五本书里的百年商业史</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235A4FE6'/%3E%3Ctext x='16' y='23' font-size='18' text-anchor='middle' fill='%23ffffff'%3E♜%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="./style.v22.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="wordmark">商业通鉴</span>
+      <span class="brand-sub">五本书里的百年商业史 · Business Chronicle</span>
+    </div>
+    <nav class="nav" id="nav">
+      <button class="nav-btn active" data-page="home">首页</button>
+      <button class="nav-btn" data-page="timeline">时间线</button>
+      <button class="nav-btn" data-page="knowledge">知识库</button>
+      <button class="nav-btn" data-page="graph">关系图谱</button>
+      <button class="nav-btn" data-page="insights">以史鉴今</button>
+      <button class="nav-btn" data-page="quiz">测验</button>
+      <button class="theme-toggle" id="theme-toggle" title="切换浅色 / 深色">☾</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- 首页 -->
+  <section class="page active" id="page-home">
+    <div class="hero">
+      <div class="hero-text">
+        <p class="hero-kicker">Business Chronicle · 五本书 × 四条时间线</p>
+        <h1>百年商业史,<br><em>五本书读懂</em>.</h1>
+        <p class="hero-sub">从美第奇的汇票到 ChatGPT —— 34 个理论节点、48 个企业现场、29 种商业模式、19 次组织进化与 34 本经典著作,五本书、五条线叠在一起,让百年商业史 <em>规律自现</em>.</p>
+        <div class="hero-actions">
+          <button class="btn primary" data-goto="timeline">进入时间线</button>
+          <button class="btn ghost" data-goto="quiz">先测一测</button>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="book-cover b-1" title="《商业模式全史》 三谷宏治"><img src="./assets/cover-model.jpg" alt="《商业模式全史》封面" loading="lazy"></div>
+        <div class="book-cover b-2" title="《经营战略全史》 三谷宏治"><img src="./assets/cover.jpg" alt="《经营战略全史》封面" loading="lazy"></div>
+        <div class="book-cover b-3" title="《他们创造了美国》 哈罗德·埃文斯"><img src="./assets/cover-america.jpg" alt="《他们创造了美国》封面" loading="lazy"></div>
+        <div class="book-cover b-4" title="《管理百年》 斯图尔特·克雷纳"><img src="./assets/cover-mgmt100.jpg" alt="《管理百年》封面" loading="lazy"></div>
+        <div class="book-cover b-5" title="《新经营学》 三谷宏治"><img src="./assets/cover-newbiz.jpg" alt="《新经营学》封面" loading="lazy"></div>
+        <div class="book-caption">《商业模式全史》 × 《经营战略全史》 × 《他们创造了美国》 × 《管理百年》 × 《新经营学》</div>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track" id="marquee-track"></div>
+    </div>
+
+    <div class="stats-band reveal">
+      <div class="stats-grid" id="home-stats"></div>
+    </div>
+
+    <div class="home-grid">
+      <div class="card reveal">
+        <div class="eyebrow">About the Books</div>
+        <h3>五本书,四个视角</h3>
+        <p>同一个百年,几本书各看一面。叠在一起,规律自现:</p>
+        <ul>
+          <li><b>《经营战略全史》</b>(三谷宏治)看“思想”——百年战略理论的学派之争;</li>
+          <li><b>《他们创造了美国》</b>(哈罗德·埃文斯)看“现场”——53 位革新者如何把发明推向大众;</li>
+          <li><b>《商业模式全史》</b>(三谷宏治)看“模式”——六百年赚钱方式的进化与转世;</li>
+          <li><b>《管理百年》</b>(克雷纳)看“组织”——组织形态与管理实践的百年进化;</li>
+          <li><b>《新经营学》</b>(三谷宏治)给一副“透镜”——目标/价值/能力/收益四要素,看透任何一门生意。</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="eyebrow">How to Explore</div>
+        <h3>怎么用这个站</h3>
+        <div class="steps">
+          <div class="step"><div class="step-n" style="--sb:rgba(90,79,230,.12);--st:#5A4FE6">01</div><div><div class="st-t">五轨时间线</div><div class="st-d">理论 × 企业 × 模式 × 组织 × 著作,五本书叠在一起看规律。</div></div></div>
+          <div class="step"><div class="step-n" style="--sb:rgba(216,71,79,.10);--st:#D8474F">02</div><div><div class="st-t">节点卡片库</div><div class="st-d">四类现场节点 + 著作维度,切换、筛选、搜索。</div></div></div>
+          <div class="step"><div class="step-n" style="--sb:rgba(183,122,34,.12);--st:#B77A22">03</div><div><div class="st-t">学派之争 × 关系图谱</div><div class="st-d">两派正面对比,谱系图看谁影响谁。</div></div></div>
+          <div class="step"><div class="step-n" style="--sb:rgba(14,156,107,.12);--st:#0E9C6B">04</div><div><div class="st-t">以史鉴今</div><div class="st-d">七条百年规律,把历史读成对未来的判断。</div></div></div>
+          <div class="step"><div class="step-n" style="--sb:rgba(44,116,214,.12);--st:#2C74D6">05</div><div><div class="st-t">测验与交流区</div><div class="st-d">10 题自测检验掌握,留言区写下读书心得。</div></div></div>
+        </div>
+        <div class="learn-progress">
+          <div class="lp-head"><span>学习进度</span><b id="lp-text">0 / 130</b></div>
+          <div class="lp-lines">
+            <div class="lp-line"><span style="--lc:var(--accent)">理论</span><div class="lp-bar"><i id="lp-t"></i></div><b id="lp-tn">0/34</b></div>
+            <div class="lp-line"><span style="--lc:var(--warn)">企业</span><div class="lp-bar"><i id="lp-c" style="background:var(--warn)"></i></div><b id="lp-cn">0/48</b></div>
+            <div class="lp-line"><span style="--lc:var(--info)">模式</span><div class="lp-bar"><i id="lp-m" style="background:var(--info)"></i></div><b id="lp-mn">0/29</b></div>
+            <div class="lp-line"><span style="--lc:var(--ok)">组织</span><div class="lp-bar"><i id="lp-o" style="background:var(--ok)"></i></div><b id="lp-on">0/19</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 时间线 -->
+  <section class="page" id="page-timeline">
+    <div class="page-head">
+      <div class="page-head-en">Timeline · 1397—2022</div>
+      <h2>百年<em>五轨</em>时间线</h2>
+      <p>理论看思想、企业看现场、模式看赚钱方式、组织看怎么管、著作看思想如何出版成经典——五线叠加,规律自现。<span id="tl-count"></span></p>
+    </div>
+    <div class="tl-mode" id="tl-mode">
+      <button data-mode="theory">理论线</button>
+      <button data-mode="company">企业线</button>
+      <button data-mode="model">模式线</button>
+      <button data-mode="org">组织线</button>
+      <button data-mode="both" class="active">五轨对照</button>
+    </div>
+    <div class="tl-filter" id="tl-filter"></div>
+    <div class="tl-filter el-filter" id="el-filter"></div>
+    <div class="tl-scale" id="tl-scale"></div>
+    <div class="tl-body" id="tl-body"></div>
+  </section>
+
+  <!-- 知识库 -->
+  <section class="page" id="page-knowledge">
+    <div class="page-head">
+      <div class="page-head-en">Knowledge Library</div>
+      <h2>知识<em>库</em></h2>
+      <p>把资料型页面收在一起:节点、著作、术语、人物和学派论战都在这里检索与深读。</p>
+    </div>
+    <div class="knowledge-tabs" id="knowledge-tabs">
+      <button class="active" data-kpanel="cards">节点卡片</button>
+      <button data-kpanel="books">著作与案例</button>
+      <button data-kpanel="glossary">术语词典</button>
+      <button data-kpanel="people">人物志</button>
+      <button data-kpanel="versus">学派之争</button>
+    </div>
+
+  <!-- 理论卡片 -->
+  <section class="knowledge-panel active" id="page-cards">
+    <div class="page-head">
+      <div class="page-head-en">Knowledge Cards</div>
+      <h2>节点<em>卡片库</em></h2>
+      <p>四类现场节点与著作维度:切换线索、按学派/要素筛选,或输入关键词搜索</p>
+    </div>
+    <div class="tl-mode" id="card-mode">
+      <button data-cline="theory" class="active">理论</button>
+      <button data-cline="company">企业</button>
+      <button data-cline="model">模式</button>
+      <button data-cline="org">组织</button>
+      <button data-cline="all">全部</button>
+    </div>
+    <div class="cards-toolbar">
+      <div class="tl-filter" id="card-filter"></div>
+      <input type="search" id="card-search" placeholder="搜索节点、人物、理论或案例">
+    </div>
+    <div class="tl-filter el-filter" id="card-el-filter"></div>
+    <div class="cards-grid" id="cards-grid"></div>
+  </section>
+
+  <!-- 著作与案例 -->
+  <section class="knowledge-panel" id="page-books">
+    <div class="page-head">
+      <div class="page-head-en">Books &amp; Cases</div>
+      <h2>著作与<em>案例</em></h2>
+      <p>从“谁写了哪本书”进入战略史:每本经典著作连接一个理论节点,再反查它解释过哪些企业现场、商业模式和组织实践。</p>
+    </div>
+    <div class="books-toolbar">
+      <div class="tl-filter" id="book-filter"></div>
+      <input type="search" id="book-search" placeholder="搜索作者、著作、理论或案例">
+    </div>
+    <div class="books-grid" id="books-grid"></div>
+  </section>
+
+  <!-- 术语词典 -->
+  <section class="knowledge-panel" id="page-glossary">
+    <div class="page-head">
+      <div class="page-head-en">Glossary</div>
+      <h2>术语<em>词典</em></h2>
+      <p>38 个核心术语 · 带 → 的词条可跳转到对应理论详解</p>
+    </div>
+    <div class="g-toolbar">
+      <input type="search" id="glossary-search" placeholder="搜索术语:如 护城河 / VRIO / 长尾 …">
+    </div>
+    <div class="glossary-grid" id="glossary-grid"></div>
+  </section>
+
+  <!-- 人物志 -->
+  <section class="knowledge-panel" id="page-people">
+    <div class="page-head">
+      <div class="page-head-en">People</div>
+      <h2>人物<em>志</em></h2>
+      <p>理论家与革新者——点开一个人,看他在各条线上的全部足迹。</p>
+    </div>
+    <div class="people-grid" id="people-grid"></div>
+  </section>
+
+  <!-- 学派之争 -->
+  <section class="knowledge-panel" id="page-versus">
+    <div class="page-head">
+      <div class="page-head-en">Positioning vs Capability</div>
+      <h2>学派之争:<em>定位 vs 能力</em></h2>
+      <p>战略思想史上最著名的论战。争的其实是同一个问题:为什么有的企业更赚钱?</p>
+    </div>
+
+    <!-- 一个问题,两种答案 -->
+    <div class="qa-split">
+      <div class="qa-card reveal" style="--qc:var(--accent)">
+        <div class="qa-side">定位学派说</div>
+        <p class="qa-quote">“超额利润来自<b>行业结构与位置</b>——先选一个有吸引力的行业,再在里面占一个守得住的位置。选择,比努力重要。”</p>
+        <p class="qa-who">安索夫 · 亨德森(BCG)· 波特 · 大前研一</p>
+      </div>
+      <div class="qa-card reveal" style="--qc:var(--ok)">
+        <div class="qa-side">能力学派说</div>
+        <p class="qa-quote">“超额利润来自<b>别人拿不走的资源与能力</b>——位置会被抄走,风口会变,只有长在组织里的能力搬不走。”</p>
+        <p class="qa-who">彭罗斯 · 沃纳菲尔特 · 巴尼 · 普拉哈拉德 &amp; 哈默尔</p>
+      </div>
+    </div>
+
+    <!-- 六回合论战 -->
+    <h3 class="vs-h3 reveal">论战六回合</h3>
+    <div class="rounds">
+      <div class="round reveal" style="--rw:var(--accent)">
+        <div class="round-no">R1</div>
+        <div class="round-body">
+          <div class="round-head"><b>1965—1975 · 规划学派全胜</b><span class="round-tag" style="--rc:var(--accent)">定位派得分</span></div>
+          <p>安索夫《企业战略》把”战略”正式引入经营,BCG 用经验曲线和增长-份额矩阵证明:战略可以像科学一样被分析与设计。战略规划部成为大公司标配。</p>
+        </div>
+      </div>
+      <div class="round reveal" style="--rw:var(--accent)">
+        <div class="round-no">R2</div>
+        <div class="round-body">
+          <div class="round-head"><b>1980—1985 · 波特登顶</b><span class="round-tag" style="--rc:var(--accent)">定位派巅峰</span></div>
+          <p>《竞争战略》用五力模型回答”哪个行业赚钱”,三大基本战略回答”怎么站位”;《竞争优势》补上价值链。定位学派到达历史顶点,波特成为”战略”的代名词。</p>
+        </div>
+      </div>
+      <div class="round reveal" style="--rw:var(--ok)">
+        <div class="round-no">R3</div>
+        <div class="round-body">
+          <div class="round-head"><b>1984—1991 · 实证反击</b><span class="round-tag" style="--rc:var(--ok)">能力派得分</span></div>
+          <p>沃纳菲尔特 1984 年提出资源基础理论(RBV):别看行业,看资源。鲁梅尔特 1991 年的实证研究给出重锤:企业利润差异中,<b>企业自身因素解释约 46%,行业因素仅约 8%</b>——行业不是宿命。</p>
+        </div>
+      </div>
+      <div class="round reveal" style="--rw:var(--ok)">
+        <div class="round-no">R4</div>
+        <div class="round-body">
+          <div class="round-head"><b>1990 · 核心竞争力</b><span class="round-tag" style="--rc:var(--ok)">能力派高潮</span></div>
+          <p>普拉哈拉德与哈默尔以本田发动机为例:穿越多条产品线、难以模仿的能力,才是持续优势之根。NEC 与 GTE 二十年兴衰的对照,让”育能力”压过”选位置”成为 90 年代最强音。</p>
+        </div>
+      </div>
+      <div class="round reveal" style="--rw:var(--accent)">
+        <div class="round-no">R5</div>
+        <div class="round-body">
+          <div class="round-head"><b>1996 · 波特反击</b><span class="round-tag" style="--rc:var(--accent)">定位派回击</span></div>
+          <p>波特发表《什么是战略》正面回应:你们说的很多”能力”,其实只是运营效益——人人都能学会,就不是战略。战略是独特的定位、清醒的取舍、活动的配称。他同时断言”日本企业几乎没有战略”,激起轩然大波。</p>
+        </div>
+      </div>
+      <div class="round reveal" style="--rw:var(--warn)">
+        <div class="round-no">R6</div>
+        <div class="round-body">
+          <div class="round-head"><b>1997— · 合流与超越</b><span class="round-tag" style="--rc:var(--warn)">战争落幕</span></div>
+          <p>蒂斯提出动态能力论:既要资源,也要随环境重构资源的能力——两派开始合流。而克里斯坦森、金伟灿、莱斯干脆绕开争论:在颠覆时代,战略是动态创新与试错的过程,不是静态的位置或能力。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 同案两读 -->
+    <h3 class="vs-h3 reveal">同一家公司,两种读法</h3>
+    <div class="cases">
+      <div class="case reveal">
+        <div class="case-title">西南航空:三十年持续盈利的秘密</div>
+        <div class="case-cols">
+          <div class="case-col" style="--qc:var(--accent)">
+            <div class="case-side">定位派读法</div>
+            <p>它选择了一个独特定位:点对点、短途、有限服务。然后做出清醒取舍——不供餐、不转乘、不用大枢纽;更关键的是所有活动互相<b>配称(fit)</b>:单一机型→快速过站→高飞机利用率→低成本→低票价。对手抄得走一两个环节,抄不走整个活动系统。</p>
+          </div>
+          <div class="case-col" style="--qc:var(--ok)">
+            <div class="case-side">能力派读法</div>
+            <p>真正的壁垒是<b>组织能力</b>:20 分钟过站背后,是地勤、乘务、飞行员之间高度的协作文化——这种无形资源有价值、稀缺、难以模仿(VRIN)。大陆和联合都试过复制”西南精简版”,抄到了流程,抄不到文化,双双失败。</p>
+          </div>
+        </div>
+      </div>
+      <div class="case reveal">
+        <div class="case-title">本田:从摩托车闯进汽车的底气</div>
+        <div class="case-cols">
+          <div class="case-col" style="--qc:var(--accent)">
+            <div class="case-side">定位派读法</div>
+            <p>本田成功是因为<b>选对了位置</b>:以小排量、低油耗产品切入了被底特律忽视的细分市场,在北美找到防守薄弱的地带。先在有利地形落子,再逐步上攻。</p>
+          </div>
+          <div class="case-col" style="--qc:var(--ok)">
+            <div class="case-side">能力派读法</div>
+            <p>本田的根是<b>发动机技术</b>这项核心竞争力:它穿越摩托车、汽车、割草机、船外机多条产品线,每个市场都只是这项能力的”临时落脚点”。这正是普拉哈拉德与哈默尔 1990 年原文选用的招牌案例。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 思想祖谱 -->
+    <h3 class="vs-h3 reveal">思想祖谱:争论从哪来</h3>
+    <div class="roots">
+      <div class="root reveal" style="--qc:var(--accent)">
+        <div class="root-tag">定位派源头 · 产业组织经济学</div>
+        <p>1950 年代,哈佛学派的梅森与贝恩提出 <b>SCP 范式</b>:市场<b>结构</b>(Structure)决定企业<b>行为</b>(Conduct),行为决定<b>绩效</b>(Performance)。既然结构决定利润,战略自然就是”选结构、占位置”——波特正是把这套产业经济学带进企业战略的人。</p>
+      </div>
+      <div class="root reveal" style="--qc:var(--ok)">
+        <div class="root-tag">能力派源头 · 企业成长理论</div>
+        <p>1959 年,彭罗斯出版《企业成长理论》:企业是<b>一组生产性资源的集合</b>,增长的边界不在市场,而在资源所能支撑的服务。这颗种子埋了 25 年,直到沃纳菲尔特 1984 年把它命名为”资源基础理论”,巴尼再用 VRIN 给出判别标准。</p>
+      </div>
+    </div>
+
+    <!-- 速查表 -->
+    <h3 class="vs-h3 reveal">速查表</h3>
+    <div class="versus-wrap" id="versus-wrap"></div>
+
+    <div class="versus-note reveal">
+      <h3>今天的答案</h3>
+      <p>回头看,两派其实各自抓住了一半真理:<b>没有好位置,能力无处施展;没有真能力,位置守不长久</b>。动态能力论把两者缝在一起,创新学派则提醒我们:在颠覆周期越来越短的时代,比位置和能力更重要的是<b>重新发现位置、重新锻造能力的速度</b>。这正是《经营战略全史》最后给出的启示——战略理论不会终结,它随着时代不断重生。</p>
+    </div>
+  </section>
+  </section>
+
+  <!-- 关系图谱 -->
+  <section class="page" id="page-graph">
+    <div class="page-head">
+      <div class="page-head-en">Genealogy of Ideas</div>
+      <h2>学派<em>关系图谱</em></h2>
+      <p>五条学派泳道 × 百年时间轴。悬停查看关系,点击节点打开理论详情。</p>
+    </div>
+    <div class="graph-legend">
+      <span class="gl-item"><i class="gl-line"></i>影响与传承</span>
+      <span class="gl-item"><i class="gl-line dashed"></i>争论与批判</span>
+      <span class="gl-sep"></span>
+      <span id="graph-legend-schools"></span>
+    </div>
+    <div class="graph-wrap" id="graph-wrap"></div>
+    <p class="graph-tip" id="graph-tip">把鼠标移到任意理论节点上,看看它与谁相连。</p>
+  </section>
+
+  <!-- 以史鉴今 -->
+  <section class="page" id="page-insights">
+    <div class="page-head">
+      <div class="page-head-en">Patterns &amp; Future</div>
+      <h2>以史<em>鉴今</em></h2>
+      <p>百年的意义不在记住过去,而在训练判断——用历史规律、失效信号和行动问题,形成面向当下的战略判断仪表盘。</p>
+    </div>
+    <div class="insight-dashboard reveal">
+      <div class="dash-head">
+        <span>Strategy Judgement</span>
+        <h3>战略判断仪表盘</h3>
+        <p>把三本书里的理论、案例与商业模式折叠成四个现场问题:什么变便宜了、谁被重新分工、护城河迁到哪里、组织还能不能跟上。</p>
+      </div>
+      <div class="judge-grid">
+        <div class="judge-card">
+          <span>01 / Cost</span>
+          <h4>成本趋零</h4>
+          <p>新技术真正改变战略时,通常不是因为它更酷,而是把某项关键成本压到足够低:搜索、复制、协作、计算、试错或分发。</p>
+        </div>
+        <div class="judge-card">
+          <span>02 / Boundary</span>
+          <h4>边界重画</h4>
+          <p>产业边界变化时,五力、价值链和平台逻辑会同时移动。先看谁被纳入生态,再看谁从价值链里被剥离。</p>
+        </div>
+        <div class="judge-card">
+          <span>03 / Moat</span>
+          <h4>护城河迁移</h4>
+          <p>规模、品牌、渠道仍然重要,但数据反馈、模型迭代、场景占有和伙伴网络正在成为新的防御层。</p>
+        </div>
+        <div class="judge-card">
+          <span>04 / Tempo</span>
+          <h4>组织节奏</h4>
+          <p>战略失效常常不是方向错,而是组织学习速度慢于环境变化。判断一家公司,要同时看认知、资源和动作频率。</p>
+        </div>
+      </div>
+    </div>
+    <div class="insight-grid">
+      <div class="card insight reveal">
+        <div class="insight-num">01</div>
+        <h3>范式每 20—30 年转移一次</h3>
+        <p class="insight-ev"><span>历史证据</span>1910s 科学管理 → 1960s 规划与定位 → 1990s 能力与学习 → 2000s 创新与商业模式。每次转移都不是推翻前人,而是重排优先级。</p>
+        <p class="insight-future"><span>对未来的启示</span>AI 时代正站在下一次转移的起点。别问「哪个框架会赢」,先问「旧框架能怎样重新组合」。
+        <button class="btn ghost ev-btn" data-decade="1990">看证据 · 1990s →</button></p>
+      </div>
+      <div class="card insight reveal">
+        <div class="insight-num">02</div>
+        <h3>通用技术革命必然催生新战略框架</h3>
+        <p class="insight-ev"><span>历史证据</span>电力 → 流水线与科学管理;大型机 → 事业部制普及;PC → 能力学派回潮;互联网 → 平台、长尾与蓝海。</p>
+        <p class="insight-future"><span>对未来的启示</span>评估任何新技术(AI、机器人、新能源),先问它把哪项成本打到趋零——那就是新框架的生长点。
+        <button class="btn ghost ev-btn" data-decade="1990">看证据 · 1990s →</button></p>
+      </div>
+      <div class="card insight reveal">
+        <div class="insight-num">03</div>
+        <h3>颠覆的窗口在缩短</h3>
+        <p class="insight-ev"><span>历史证据</span>硬盘行业每次迭代约十年;诺基亚从巅峰到出局只有六年(2007—2013);ChatGPT 让多个行业在一年内重新定价。</p>
+        <p class="insight-future"><span>对未来的启示</span>在位者的反应时间从「年」变成「季度」。格鲁夫的「10 倍速」已成常态,监测边缘市场必须成为固定动作。
+        <button class="btn ghost ev-btn" data-decade="2000">看证据 · 2000s →</button></p>
+      </div>
+      <div class="card insight reveal">
+        <div class="insight-num">04</div>
+        <h3>护城河一直在迁移</h3>
+        <p class="insight-ev"><span>历史证据</span>规模(经验曲线)→ 位置(五力)→ 资源与能力(RBV)→ 网络效应与生态(平台)。每一代护城河都被下一代绕过,而非填平。</p>
+        <p class="insight-future"><span>对未来的启示</span>下一代护城河大概率是「独有数据 × 迭代速度」。盘点资产时,把数据和学习速率也算进去。
+        <button class="btn ghost ev-btn" data-decade="1980">看证据 · 1980s →</button></p>
+      </div>
+      <div class="card insight reveal">
+        <div class="insight-num">05</div>
+        <h3>战略的单位从企业变成生态</h3>
+        <p class="insight-ev"><span>历史证据</span>竞合理论(1996)先松动了「商场如战场」;App Store 与 AWS 证明:最大的赢家,是让别人能在自己肩膀上成功的人。</p>
+        <p class="insight-future"><span>对未来的启示</span>画一张你的价值网:谁因你而成功?让伙伴赚钱的能力,比赢过对手的能力更稀缺。
+        <button class="btn ghost ev-btn" data-decade="2000">看证据 · 2000s →</button></p>
+      </div>
+      <div class="card insight reveal">
+        <div class="insight-num">06</div>
+        <h3>变的是工具,不变的是判断</h3>
+        <p class="insight-ev"><span>历史证据</span>从安索夫到鲁梅尔特,好战略的内核始终是:看清问题(诊断)、做出选择(方针)、集中力量(连贯行动)。</p>
+        <p class="insight-future"><span>对未来的启示</span>AI 可以生成一百份分析,但「取舍」仍然要人来做——这正是读史的意义:练判断,而不是背框架。
+        <button class="btn ghost ev-btn" data-decade="2010">看证据 · 2010s →</button></p>
+      </div>
+      <div class="card insight reveal">
+        <div class="insight-num">07</div>
+        <h3>商业模式会「转世」</h3>
+        <p class="insight-ev"><span>历史证据</span>吉列的刀架刀片(1903)→ 打印机墨盒 → 咖啡胶囊;三井的明码标价(1673)→ A&P → 沃尔玛 → 亚马逊低价飞轮;GMAC 分期付款(1919)→ Netflix 订阅制。</p>
+        <p class="insight-future"><span>对未来的启示</span>看到一个「新模式」,先找它的前世——换的是技术外衣,不变的是人性与成本结构。三本书叠在一起,转世的路径一目了然。
+        <button class="btn ghost ev-btn" data-decade="1900">看证据 · 1900s →</button></p>
+      </div>
+    </div>
+    <div class="insight-tools reveal">
+      <div class="tool-panel question-panel">
+        <div class="tool-kicker">AI Era · Ten Questions</div>
+        <h3>AI 时代十问</h3>
+        <ol class="question-list">
+          <li>我们的核心客户任务,是否因为 AI 变得更容易被重新定义?</li>
+          <li>哪一项成本正在趋零:内容、沟通、预测、服务、研发还是交易?</li>
+          <li>原来的优势是规模优势、位置优势、能力优势,还是生态优势?</li>
+          <li>这个优势会被模型能力放大,还是被模型能力商品化?</li>
+          <li>我们独有的数据、流程、场景和反馈闭环在哪里?</li>
+          <li>AI 会让客户绕过我们,还是让伙伴更依赖我们?</li>
+          <li>行业中最小、最边缘的客户正在被谁更好地服务?</li>
+          <li>如果收入下降 20%,哪些活动仍必须保留,哪些应被停止?</li>
+          <li>组织最快多久能把一次洞察变成上线实验?</li>
+          <li>今天的选择是否形成一组连贯行动,还是只是零散项目?</li>
+        </ol>
+      </div>
+      <div class="tool-panel">
+        <div class="tool-kicker">Failure Signals</div>
+        <h3>反例与失效信号速查</h3>
+        <div class="failure-grid">
+          <div><span>定位失效</span><p>需求边界被新技术改写,原有品类心智不再决定购买。</p></div>
+          <div><span>规模失效</span><p>固定资产越大,转身成本越高,小团队用新工具绕开规模壁垒。</p></div>
+          <div><span>平台失效</span><p>补贴堆出两边市场,但没有形成跨边网络效应与治理能力。</p></div>
+          <div><span>能力失效</span><p>核心能力与新任务错配,过去的熟练动作变成路径依赖。</p></div>
+          <div><span>蓝海失效</span><p>差异化只停留在概念,没有同步改变成本结构和履约方式。</p></div>
+          <div><span>生态失效</span><p>伙伴不能赚钱,价值网只剩口号,最终退回单点竞争。</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="moat-map reveal">
+      <div class="tool-kicker">Moat Migration</div>
+      <h3>护城河迁移图</h3>
+      <div class="moat-steps">
+        <div><b>1910s</b><span>效率与标准化</span><p>科学管理、流水线、规模制造。</p></div>
+        <div><b>1960s</b><span>规划与组合</span><p>增长路径、经验曲线、事业部制。</p></div>
+        <div><b>1980s</b><span>位置与竞争结构</span><p>五力、价值链、品类定位。</p></div>
+        <div><b>1990s</b><span>资源与学习</span><p>核心能力、动态能力、学习型组织。</p></div>
+        <div><b>2000s+</b><span>生态与反馈</span><p>平台、网络效应、数据闭环、快速迭代。</p></div>
+      </div>
+    </div>
+    <div class="versus-note reveal" style="margin-top:24px">
+      <h3>写在最后</h3>
+      <p>理论线告诉你<b>思想如何演进</b>,企业线告诉你<b>现场如何发生</b>,模式线告诉你<b>赚钱方式如何进化</b>——三条线叠在一起,你会发现它们互为因果:实践提出问题,理论给出语言,模式把语言变成生意,生意又催生新的实践。读懂这个循环,你就拥有了面对下一个百年的判断力。</p>
+    </div>
+  </section>
+
+  <!-- 测验 -->
+  <section class="page" id="page-quiz">
+    <div class="page-head">
+      <div class="page-head-en">Quiz · 10 Questions</div>
+      <h2>知识<em>测验</em></h2>
+      <p>10 道选择题 · 答完即时出分 · 最好成绩保存在本地</p>
+    </div>
+    <div class="quiz-shell" id="quiz-shell"></div>
+  </section>
+
+  <!-- 交流区 -->
+  <section class="page" id="page-forum">
+    <div class="page-head">
+      <div class="page-head-en">Discussion</div>
+      <h2>读书<em>交流区</em></h2>
+      <p>留言保存在你自己的浏览器里(localStorage),适合做读书打卡与笔记交流。</p>
+    </div>
+    <div class="forum-shell">
+      <form class="forum-form" id="forum-form">
+        <input type="text" id="forum-name" maxlength="12" placeholder="昵称(必填)" required>
+        <textarea id="forum-text" rows="3" maxlength="300" placeholder="写下你的心得、疑问或喜欢的理论…(必填,300字内)" required></textarea>
+        <button type="submit" class="btn primary">发布留言</button>
+      </form>
+      <div class="forum-list" id="forum-list"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>本站为《经营战略全史》《商业模式全史》(三谷宏治 著)与《他们创造了美国》(哈罗德·埃文斯 著)的学习辅助站点,所有摘要均为整理者按公开知识自行撰写,非原书文字摘录。</p>
+</footer>
+
+<!-- 详情弹层 -->
+<div class="modal-mask" id="modal-mask">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script src="./data.v22.js"></script>
+<script src="./app.v22.js"></script>
+<script
+  defer
+  src="https://plugin.apps.zaowuyun.com/sdk/feedback-widget/bootstrap/1/auto.iife.js"
+  integrity="sha384-NNpLTwWcUEbU7sH7CNVPui/+UqCKEEwBK4ZQKYAev+xJrogfNmw/pIaVm8+z8Unu"
+  crossorigin="anonymous"
+  data-project-key="pk_6-zg3jN-DVxeO0LvrxvV2s4b"
+  data-api-base-url="https://plugin.apps.zaowuyun.com"
+  data-locale="zh-CN"
+></script>
+</body>
+</html>
