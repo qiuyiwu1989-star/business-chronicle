@@ -96,6 +96,14 @@ function updateProgress() {
     });
 }
 
+/* ---------- 首页文案数字：从数据实时生成,防止口径漂移 ---------- */
+(function syncHeroCounts() {
+  const works = new Set(THEORIES.map(t => t.work).filter(Boolean));
+  const pairs = [["hs-t", THEORIES.length], ["hs-c", COMPANIES.length],
+                 ["hs-m", MODELS.length], ["hs-o", ORGS.length], ["hs-w", works.size]];
+  pairs.forEach(([id, n]) => { const el = $("#" + id); if (el) el.textContent = n; });
+})();
+
 /* ---------- 首页统计 ---------- */
 (function renderStats() {
   const years = THEORIES.map(t => t.year);
