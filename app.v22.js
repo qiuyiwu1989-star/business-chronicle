@@ -119,6 +119,39 @@ function updateProgress() {
     `<div class="stat reveal"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("");
 })();
 
+/* ---------- 六幕商业史(叙事层) ---------- */
+(function renderActs() {
+  const box = $("#acts-grid");
+  if (!box || typeof ACTS === "undefined") return;
+  box.innerHTML = ACTS.map((a, i) => `
+    <article class="act reveal" data-act="${i}">
+      <div class="act-side"><span class="act-no">${a.no}</span><span class="act-span">${a.span}</span></div>
+      <div class="act-main">
+        <h4>${a.title}</h4>
+        <p class="act-thesis">${a.thesis}</p>
+        <p class="act-body">${a.body}</p>
+        <div class="act-ask"><span>留给你的问题</span>${a.ask}</div>
+        <div class="act-pivot">${a.pivot.map(p =>
+          `<button class="act-chip" data-pivot="${p}">${p}</button>`).join("")}</div>
+      </div>
+    </article>`).join("");
+
+  // 点转折点 → 打开对应节点的弹层
+  box.addEventListener("click", (e) => {
+    const chip = e.target.closest(".act-chip");
+    if (!chip) return;
+    const key = chip.dataset.pivot;
+    const t = THEORIES.find(x => x.key === key);
+    if (t) return showDetail(t);
+    const c = COMPANIES.find(x => x.company === key);
+    if (c) return showCompany(c);
+    const m = MODELS.find(x => x.company === key);
+    if (m) return showModel(m);
+    const o = ORGS.find(x => x.company === key);
+    if (o) return showOrg(o);
+  });
+})();
+
 /* ---------- 跑马灯 ---------- */
 (function renderMarquee() {
   const terms = THEORIES.map(t => `<span><b>${t.year}</b>${t.key}</span>`).join("");
