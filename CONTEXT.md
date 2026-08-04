@@ -21,7 +21,7 @@
 | 本地路径 | `/Users/qiuyiwu/strategy-site` |
 | Git | 已初始化，主分支 `main` |
 | GitHub | `qiuyiwu1989-star/business-chronicle`（public） |
-| 线上地址 | https://history.qiuyiwu.com |
+| 线上地址 | https://chronicle.qiuyiwu.com |
 | 技术栈 | 纯静态：HTML + CSS + 原生 JS，**零依赖、零构建** |
 | 本地预览 | `node server.js` → http://localhost:3000 |
 | 档位 | G2 产品档（vibecoding-pm 规范） |
