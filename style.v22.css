@@ -620,6 +620,15 @@ main { max-width: 1280px; margin: 0 auto; padding: 40px 40px 96px; }
 }
 .insight-ev span { color: var(--fg3); }
 .insight-future { border-top: 1px dashed var(--bdr); padding-top: 12px; }
+/* 个人判断层：与「历史证据」明确区分——这是一家之言，不是公论 */
+.insight-voice {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 10px 10px 0;
+  padding: 12px 14px;
+  margin-top: 4px;
+}
+.insight-voice span { color: var(--accent) !important; }
 .insight-future span { color: var(--accent); }
 .insight-future { color: var(--fg); }
 .insight-tools {
