@@ -12,7 +12,7 @@ const path = require("path");
 const vm = require("vm");
 
 const root = path.join(__dirname, "..");
-const BASE = "https://chronicle.qiuyiwu.com";
+const BASE = "https://shangye.qiuyiwu.com";
 const TODAY = new Date().toISOString().slice(0, 10);
 
 const ctx = {};

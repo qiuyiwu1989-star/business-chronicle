@@ -20,13 +20,13 @@
 - **只搬运不发明**：内容为对公开知识的事实性整理，不得虚构史实、数据、引文；不确定的事实先查证再写入。完整六条内容红线见 `CONTEXT.md` 第 3 节。
 - 不做用户系统 / 后端数据库（留言板等仅 localStorage）。
 - 上线/部署动作必须用户说「上线 / 发布 / 同步」才执行（默认只改本地）。
-- **不要碰 `history.qiuyiwu.com`**：那是《智能革命史》另一个项目的子域，本站在 `chronicle.qiuyiwu.com`。
+- **不要碰 `history.qiuyiwu.com`**：那是《智能革命史》另一个项目的子域，本站在 `shangye.qiuyiwu.com`。
 
 ## 当前档位
 G2 产品档，已上线。升 G3 条件：接入统计看到真实访问后，补端到端冒烟测试脚本 + CI。
 
 ## 部署与并行
-- 线上：https://chronicle.qiuyiwu.com （南京机 146.56.239.22，SSH 别名 `yongle-nanjing`）
+- 线上：https://shangye.qiuyiwu.com （南京机 146.56.239.22，SSH 别名 `yongle-nanjing`）
 - 部署：`./scripts/deploy.sh`（自动校验数据 → 重建 SEO 产物 → 上传 → 冒烟）
 - GitHub：`qiuyiwu1989-star/business-chronicle`（public）
 - DEPLOY-OWNER：主会话。其它并行会话只 commit+push，不部署。

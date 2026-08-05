@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-# 商业通鉴 · 增量部署到 chronicle.qiuyiwu.com
+# 商业通鉴 · 增量部署到 shangye.qiuyiwu.com
 # 用法: ./scripts/deploy.sh
 set -euo pipefail
 
 DEPLOY_USER="${DEPLOY_USER:-ubuntu}"
 DEPLOY_HOST="${DEPLOY_HOST:-146.56.239.22}"          # 南京生产机（不是硅谷旧机）
-DEPLOY_PATH="${DEPLOY_PATH:-/var/www/chronicle.qiuyiwu.com}"
-DEPLOY_URL="${DEPLOY_URL:-https://chronicle.qiuyiwu.com}"
+DEPLOY_PATH="${DEPLOY_PATH:-/var/www/shangye.qiuyiwu.com}"
+DEPLOY_URL="${DEPLOY_URL:-https://shangye.qiuyiwu.com}"
 # publickey 必须在最前，否则非交互 shell 会卡在 keyboard-interactive
 SSH_OPTS=(-o StrictHostKeyChecking=accept-new -o PreferredAuthentications=publickey,keyboard-interactive,password)
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-ARCHIVE="/tmp/chronicle-deploy.tar.gz"
+ARCHIVE="/tmp/shangye-deploy.tar.gz"
 
 # 全部运行时文件。漏一个线上就 404。
 # 自检: grep -oE '(src|href)="\./[^"]+"' index.html

@@ -2,7 +2,7 @@
 
 > 从美第奇的汇票到 ChatGPT。五本书、五条线叠在一起，让百年商业史规律自现。
 >
-> 线上：**https://chronicle.qiuyiwu.com**
+> 线上：**https://shangye.qiuyiwu.com**
 
 这不是一本商业史知识库，是一台**练判断的机器**。
 

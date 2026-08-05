@@ -1,8 +1,8 @@
-Sitemap: https://chronicle.qiuyiwu.com/sitemap.xml
+Sitemap: https://shangye.qiuyiwu.com/sitemap.xml
 
 # 本站页面由 JS 渲染。抓取正文请优先读取：
-# https://chronicle.qiuyiwu.com/llms-full.txt   全站内容纯文本导出
-# https://chronicle.qiuyiwu.com/llms.txt        内容导览
+# https://shangye.qiuyiwu.com/llms-full.txt   全站内容纯文本导出
+# https://shangye.qiuyiwu.com/llms.txt        内容导览
 
 User-agent: *
 Allow: /

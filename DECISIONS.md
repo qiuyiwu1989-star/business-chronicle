@@ -6,7 +6,7 @@
 - (代码反推) 五本书五条线的叠加叙事：理论/企业/模式/组织/著作。「著作线」由 THEORIES 等数据的 work 字段派生。Basis: 代码反推。
 - 2026-08-03: 企业线深度层字段定为 deep{scene,choice,rival,fate,echo} 五元组，渲染复用 guide-card 零新增 CSS；有 deep 时替换通用「边界与代价」模板段。理由：真实史实优于模板话术。Confidence: high.
 - 2026-08-03: server.js 本地默认 no-store，部署环境 CACHE=1 恢复强缓存。理由：immutable 缓存让本地迭代看不到改动。Confidence: high.
-- 2026-08-04: 子域名定为 `chronicle.qiuyiwu.com`，而非原计划的 `history.qiuyiwu.com`。理由：history 子域当天已被《智能革命史》占用（/var/www/history.qiuyiwu.com，2026-08-04 16:57 部署），不可覆盖；chronicle 对应站名 Business Chronicle，且不与"智能革命史"混淆。Confidence: high.
+- 2026-08-04: 子域名定为 `shangye.qiuyiwu.com`，而非原计划的 `history.qiuyiwu.com`。理由：history 子域当天已被《智能革命史》占用（/var/www/history.qiuyiwu.com，2026-08-04 16:57 部署），不可覆盖；chronicle 对应站名 Business Chronicle，且不与"智能革命史"混淆。Confidence: high.
 - 2026-08-04: 不复用 qiuyiwu.com 其它站点的百度统计 ID。理由：一个 ID 对应一个站点，复用会把两站数据混在一起。index.html 中留注释占位，待用户申请新 ID。Confidence: high.
 - 2026-08-04: 新增 `llms-full.txt`（全站内容纯文本导出，186KB）作为 GEO 主要抓取入口。理由：本站内容由 JS 渲染，LLM 爬虫不执行 JS，没有这个文件等于对生成式引擎完全隐身。由 tools/build-seo.js 从 data 生成，部署脚本自动重建，不会与内容脱节。Confidence: high.
 - 2026-08-04: 部署脚本内置数据校验闸门（validate 不过则中止部署）。理由：内容站的回归风险在数据不在代码。Confidence: high.
@@ -15,3 +15,4 @@
 - 2026-08-04: **THEORIES 数组顺序不可重排**——THEORY_DETAILS 按索引与其一一对应，重排会让全部理论的案例/应用错位。已在 tools/validate.js 中加注释与长度一致性校验，并跳过该数组的排序提醒。MODELS/ORGS 无此依赖，已按年份排好。Confidence: high。（本次曾误重排 THEORIES，已回滚并验证索引对应完好。）
 - 2026-08-04: body 的 overflow-x 由 hidden 改为 clip，并给跑马灯的 100vw 出血补偿滚动条宽度（--sbw，app.js 实测写入）。理由：hidden 会把 overflow 传播到 viewport、让 body 变成滚动容器，既弄乱 scrollTop 也影响 sticky 表头。Confidence: high.
 - 2026-08-04: 新增可选 `voice: {text, from}` 字段作为「个人判断层」，与史实内容在数据结构与视觉上双重区分，`from`（出处）由 validate.js 强制必填。理由：神脑素材是本站差异化来源，但主理人观点绝不能混进史实叙述；带出处才可回溯、可证伪。首批挂 5 个节点。Confidence: high.
+- 2026-08-04: 子域名由 `chronicle.qiuyiwu.com` 改为 `shangye.qiuyiwu.com`（用户指定）。旧域名保留为 **301 永久重定向**（带 $request_uri，路径一并转发），不删除、不停证书——已发出去的链接不失效，搜索引擎权重也会转到新域名。旧配置备份在服务器 `/etc/nginx/sites-available/chronicle.qiuyiwu.com.bak`。Confidence: high.

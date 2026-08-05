@@ -21,7 +21,7 @@
 | 本地路径 | `/Users/qiuyiwu/strategy-site` |
 | Git | 已初始化，主分支 `main` |
 | GitHub | `qiuyiwu1989-star/business-chronicle`（public） |
-| 线上地址 | https://chronicle.qiuyiwu.com |
+| 线上地址 | https://shangye.qiuyiwu.com |
 | 技术栈 | 纯静态：HTML + CSS + 原生 JS，**零依赖、零构建** |
 | 本地预览 | `node server.js` → http://localhost:3000 |
 | 档位 | G2 产品档（vibecoding-pm 规范） |
@@ -143,7 +143,7 @@
 - 史实审计：修正吉列低价刀架 / AWS 闲置算力 / A&P 自助选购三处流行误说；数字与引语红线全量扫描通过
 - 神脑素材收割：`sources/shennao-harvest.md`（23 场转写，已脱敏）
 - 工具链：`tools/validate.js`（数据校验）、`tools/build-seo.js`（llms-full 生成）、`tools/pack-context.sh`（上下文打包）
-- SEO/GEO/PWA、GitHub 公开仓库、部署上线 chronicle.qiuyiwu.com
+- SEO/GEO/PWA、GitHub 公开仓库、部署上线 shangye.qiuyiwu.com
 
 **待办优先级**（详见 TASKS.md）
 1. 方向 D：以史鉴今扩写为完整收尾章（八条规律逐条推演到 2020s）
@@ -158,7 +158,7 @@
 - 用户指令：「把我们所有的沟通沉淀为本地文件夹的文档，便于多对话和跨平台加载」「思考还有哪些可以完善，罗列接下来的事」「我授权给你，把能写的都写掉，变成完整可验收的东西，明天早上来验收」「部署到 *.qiuyiwu.com」「GitHub 同步公开仓库」
 - 判定为**异步托管档**，做完全部可做的，交付完整验收清单。
 - 产出：本文件 + 三线 deep 放量（490 段）+ 六幕叙事层 + 两个新节点 + 史实审计 + SEO/GEO/PWA + 部署 + GitHub。
-- **一个必须知道的现场判断**：原计划部署到 `history.qiuyiwu.com`，上服务器发现该子域当天 16:57 已被《智能革命史》占用（有内容、有证书）。**没有覆盖**，改用 `chronicle.qiuyiwu.com`。任何后续会话都不要动 history 子域。
+- **一个必须知道的现场判断**：原计划部署到 `history.qiuyiwu.com`，上服务器发现该子域当天 16:57 已被《智能革命史》占用（有内容、有证书）。**没有覆盖**，改用 `shangye.qiuyiwu.com`。任何后续会话都不要动 history 子域。
 - 另：没有复用其它站的百度统计 ID（会混数据），`index.html` 里留了注释占位。
 
 **2026-08-03**

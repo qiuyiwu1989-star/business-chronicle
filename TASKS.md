@@ -7,7 +7,7 @@
 - [ ] **神脑素材继续收割**：`voice` 层目前只挂了 5 个节点（爱迪生1879/福特1913/沃尔玛1962/OpenAI2022/AI时代组织2025）。素材辑录里还有软柿子理论、MEPR、原生用法、品味壁垒、三层上下文等可挂载，建议每次读到合适节点就补一条
 - [ ] 理论线也支持 `voice` 层（目前只有三条现场线+中国线的 `deepSections` 支持，`showDetail` 未接）
 - [ ] 理论线也补 deep 同级深度（目前理论线用的是 details/guides/limits 三层，与三条现场线结构不同，可考虑统一）
-- [ ] 百度统计：申请 history/chronicle 独立站点 ID 后接入（index.html 已留注释占位）
+- [ ] 百度统计：申请 shangye 独立站点 ID 后接入（index.html 已留注释占位）
 - [ ] 提交 sitemap 到百度站长平台 + Google Search Console（需用户账号）
 - [ ] 全站一致性回归（site-consistency-audit skill）
 
@@ -26,7 +26,7 @@
 - 2026-08-04: 发现并防护 THEORIES↔THEORY_DETAILS 索引依赖（曾误重排，已回滚并加校验）
 - 2026-08-04: 以史鉴今新增规律08 + 个人判断层（.insight-voice），神脑素材落地
 - 2026-08-04: 方向 B 六幕商业史叙事层（ACTS 数据 + 首页区块 + 18 个可跳转转折点）
-- 2026-08-04: 部署上线 chronicle.qiuyiwu.com（nginx + certbot + deploy.sh 含校验闸门）
+- 2026-08-04: 部署上线 shangye.qiuyiwu.com（nginx + certbot + deploy.sh 含校验闸门）
 - 2026-08-04: GitHub 公开仓库 qiuyiwu1989-star/business-chronicle
 - 2026-08-04: SEO/GEO + PWA（llms-full.txt 186KB 全量导出、robots LLM 白名单、JSON-LD、OG 图、SW 离线）
 - 2026-08-04: 模式线 29/29 + 组织线 20/20 补 deep；修正吉列/AWS/A&P 三处史实口径
