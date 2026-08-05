@@ -16,3 +16,7 @@
 - 2026-08-04: body 的 overflow-x 由 hidden 改为 clip，并给跑马灯的 100vw 出血补偿滚动条宽度（--sbw，app.js 实测写入）。理由：hidden 会把 overflow 传播到 viewport、让 body 变成滚动容器，既弄乱 scrollTop 也影响 sticky 表头。Confidence: high.
 - 2026-08-04: 新增可选 `voice: {text, from}` 字段作为「个人判断层」，与史实内容在数据结构与视觉上双重区分，`from`（出处）由 validate.js 强制必填。理由：神脑素材是本站差异化来源，但主理人观点绝不能混进史实叙述；带出处才可回溯、可证伪。首批挂 5 个节点。Confidence: high.
 - 2026-08-04: 子域名由 `chronicle.qiuyiwu.com` 改为 `shangye.qiuyiwu.com`（用户指定）。旧域名保留为 **301 永久重定向**（带 $request_uri，路径一并转发），不删除、不停证书——已发出去的链接不失效，搜索引擎权重也会转到新域名。旧配置备份在服务器 `/etc/nginx/sites-available/chronicle.qiuyiwu.com.bak`。Confidence: high.
+- 2026-08-04: UI 默认改为浅色，不再跟随系统 prefers-color-scheme；仅当用户手动切换过（localStorage 有值）才用其选择。理由：这是长文阅读的内容站，浅色是更合适的默认。Confidence: high.
+- 2026-08-04: 引入 hash 路由（页面 #timeline / 子面板 #motifs / 节点 #c-30），弹层打开即 pushState。理由：解决「点进去回不来」——浏览器返回键、弹层内「← 返回」按钮、刷新直达、单节点分享，四件事一次解决。Confidence: high.
+- 2026-08-04: 知识库的「深入」方向定为**加连接而非加信息**：新增 MOTIFS 母题横切索引（8 条，48 处节点引用），按商业结构而非按线组织，复用既有节点零新增内容。理由：站点定位是练判断，母题让读者看见规律本身在六百年里反复出现。Confidence: high.
+- 2026-08-04: 关系图谱新增第六条泳道「智能学派」，明确标注「正在形成中」。收录 4 个节点：平台经济学(2016)、人机重新分工(2017)、预测成本坍塌(2018) 三本可查证的公开著作 + 智能密度(2026) 站方原创提法。理由：用户要求把当下正在发生的纳入谱系；做法上必须与已成定论的学派做视觉与措辞区分，原创提法要自陈「尚待检验」。Confidence: high.

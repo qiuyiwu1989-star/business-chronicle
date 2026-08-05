@@ -4,24 +4,38 @@ const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
 /* ---------- 页面切换 ---------- */
-const KNOWLEDGE_PANELS = ["cards", "books", "glossary", "people", "versus"];
+const KNOWLEDGE_PANELS = ["cards", "motifs", "books", "glossary", "people", "versus"];
 
-function showKnowledgePanel(name) {
+function showKnowledgePanel(name, opts) {
   if (!KNOWLEDGE_PANELS.includes(name)) return;
   $$(".knowledge-panel").forEach(p => p.classList.toggle("active", p.id === "page-" + name));
   $$("#knowledge-tabs button").forEach(b => b.classList.toggle("active", b.dataset.kpanel === name));
   if (window.__watchReveal) window.__watchReveal();
+  // 子面板也写进地址栏，这样 #motifs、#glossary 可以直接分享与直达
+  if (!suppressHash && !(opts && opts.silent)) {
+    const target = "#" + name;
+    if (location.hash !== target) history.pushState({ page: name }, "", target);
+  }
 }
 
-function gotoPage(name) {
+const PAGES = ["home", "timeline", "knowledge", "graph", "insights", "quiz"];
+let suppressHash = false;   // 由 hash 变化驱动的切换,不要再写回 hash
+
+function gotoPage(name, opts) {
+  const o = opts || {};
   const knowledgePanel = KNOWLEDGE_PANELS.includes(name) ? name : null;
   if (knowledgePanel) name = "knowledge";
   $$(".page").forEach(p => p.classList.remove("active"));
   const page = $("#page-" + name);
   if (page) page.classList.add("active");
   $$(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.page === name));
-  if (knowledgePanel) showKnowledgePanel(knowledgePanel);
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (knowledgePanel) showKnowledgePanel(knowledgePanel, { silent: true });
+  if (!o.keepScroll) window.scrollTo({ top: 0, behavior: o.instant ? "auto" : "smooth" });
+  // 写入地址栏:可分享、可刷新回到原处、浏览器前进后退可用
+  if (!suppressHash && !o.silent) {
+    const target = "#" + (knowledgePanel || name);
+    if (location.hash !== target) history.pushState({ page: knowledgePanel || name }, "", target);
+  }
 }
 
 $("#nav").addEventListener("click", (e) => {
@@ -30,6 +44,44 @@ $("#nav").addEventListener("click", (e) => {
 });
 
 $$("[data-goto]").forEach(b => b.addEventListener("click", () => gotoPage(b.dataset.goto)));
+
+/* ---------- 地址栏路由：页面与节点都可直达、可返回 ---------- */
+// hash 形态：#timeline（页面） / #c-12（节点：线前缀-索引）
+const NODE_PREFIX = { t: "theory", c: "company", m: "model", o: "org", h: "china" };
+
+function openNodeByHash(hash) {
+  const m = /^#([tcmoh])-(\d+)$/.exec(hash);
+  if (!m) return false;
+  const kind = NODE_PREFIX[m[1]];
+  const idx = Number(m[2]);
+  const arr = kind === "theory" ? THEORIES : kind === "company" ? COMPANIES
+    : kind === "model" ? MODELS : kind === "org" ? ORGS : CHINA_LIST;
+  if (!arr || !arr[idx]) return false;
+  if (kind === "theory") showDetail(arr[idx], { silent: true });
+  else if (kind === "company") showCompany(arr[idx], { silent: true });
+  else if (kind === "model") showModel(arr[idx], { silent: true });
+  else if (kind === "org") showOrg(arr[idx], { silent: true });
+  else showChina(arr[idx], { silent: true });
+  return true;
+}
+
+function applyHash() {
+  const h = location.hash;
+  suppressHash = true;
+  if (openNodeByHash(h)) { suppressHash = false; return; }
+  // 不是节点 hash：关掉可能开着的弹层，再切页面
+  if ($("#modal-mask").classList.contains("show")) closeModal({ silent: true });
+  const name = h.replace(/^#/, "");
+  if (PAGES.includes(name) || KNOWLEDGE_PANELS.includes(name)) {
+    gotoPage(name, { silent: true, instant: true });
+  } else if (!h) {
+    gotoPage("home", { silent: true, instant: true });
+  }
+  suppressHash = false;
+}
+
+window.addEventListener("popstate", applyHash);
+window.addEventListener("hashchange", applyHash);
 
 const knowledgeTabs = $("#knowledge-tabs");
 if (knowledgeTabs) {
@@ -44,9 +96,9 @@ const THEME_KEY = "strategy_theme";
 (function initTheme() {
   let saved = null;
   try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
-  const theme = saved ||
-    (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-  applyTheme(theme);
+  // 默认浅色。只有用户自己切换过（localStorage 有值）才用他的选择，
+  // 不再跟随系统的 prefers-color-scheme——这是内容站，浅色是长文阅读的默认。
+  applyTheme(saved === "dark" ? "dark" : "light");
   $("#theme-toggle").addEventListener("click", () => {
     const next = document.documentElement.dataset.theme === "light" ? "dark" : "light";
     applyTheme(next);
@@ -415,7 +467,7 @@ function buildChips(container, onPick) {
 }
 
 /* ---------- 详情弹层(四栏深度版) ---------- */
-function showDetail(t) {
+function showDetail(t, opts) {
   const idx = THEORIES.indexOf(t);
   const sc = SCHOOLS[t.school];
   const d = THEORY_DETAILS[idx] || {};
@@ -425,7 +477,10 @@ function showDetail(t) {
   const caseCards = relatedCaseCards(t.key);
   const read = isRead(idx);
   $("#modal").innerHTML = `
-    <button class="m-close" id="m-close">×</button>
+    <div class="m-bar">
+      <button class="m-back" id="m-close">← 返回</button>
+      <button class="m-share-btn" id="m-share">复制本节点链接</button>
+    </div>
     <div class="m-year" style="--sc:${sc.color}">${t.year} 年 · ${sc.name}</div>
     <h3>${t.key}</h3>
     <div class="m-person">${t.person}</div>
@@ -454,10 +509,12 @@ function showDetail(t) {
     }).join("")}</div></div>` : ""}
     ${d.case ? `<div class="m-sec"><h4>经典案例</h4><p>${d.case}</p></div>` : ""}
     ${d.use ? `<div class="m-sec"><h4>现实应用</h4><p>${d.use}</p></div>` : ""}
+    ${t.voice ? voiceSection(t.voice) : ""}
     ${caseCards ? `<div class="m-sec"><h4>关联解释</h4><div class="rel-card-grid">${caseCards}</div></div>` : ""}
     ${relBtns ? `<div class="m-sec"><h4>相关理论</h4><div class="m-rel">${relBtns}</div></div>` : ""}
     <button class="btn ghost m-read-btn ${read ? "done" : ""}" id="m-read">${read ? "✓ 已读 · 点击取消" : "标记为已读"}</button>`;
   $("#modal-mask").classList.add("show");
+  pushModalHash("t", THEORIES.indexOf(arguments[0]), opts);
   $("#m-close").addEventListener("click", closeModal);
   bindModalChips();
   $("#m-read").addEventListener("click", () => {
@@ -470,7 +527,29 @@ function showDetail(t) {
     updateProgress();
   });
 }
-function closeModal() { $("#modal-mask").classList.remove("show"); }
+function closeModal(opts) {
+  const wasOpen = $("#modal-mask").classList.contains("show");
+  $("#modal-mask").classList.remove("show");
+  // 用户主动关闭（点 × / 点遮罩 / 按 ESC）时回退一步历史，
+  // 让地址栏回到所在页面——从而"返回键关弹层"和"关弹层不留脏 hash"两边一致。
+  if (wasOpen && !(opts && opts.silent) && modalPushed) {
+    modalPushed = false;
+    history.back();
+  }
+}
+
+// 弹层的地址栏登记：打开节点时把 #<线前缀>-<索引> 推进历史，
+// 于是浏览器返回键会退回上一个 hash，applyHash 再把弹层关掉。
+let modalPushed = false;
+function pushModalHash(prefix, idx, opts) {
+  if (opts && opts.silent) { modalPushed = true; return; }
+  if (idx < 0) return;
+  const target = "#" + prefix + "-" + idx;
+  if (location.hash !== target) {
+    history.pushState({ node: target }, "", target);
+    modalPushed = true;
+  }
+}
 
 /* ---------- 时代背景层 ---------- */
 function eraOf(year) {
@@ -511,10 +590,13 @@ function deepSections(o, briefTitle, kind) {
 }
 
 /* ---------- 企业现场 / 模式现场 / 组织现场弹层 ---------- */
-function showCompany(c) {
+function showCompany(c, opts) {
   const idx = COMPANIES.indexOf(c);
   $("#modal").innerHTML = `
-    <button class="m-close" id="m-close">×</button>
+    <div class="m-bar">
+      <button class="m-back" id="m-close">← 返回</button>
+      <button class="m-share-btn" id="m-share">复制本节点链接</button>
+    </div>
     <div class="m-year" style="--sc:#B77A22">${c.year} 年 · 企业现场</div>
     <h3>${c.company} · ${c.event} ${resoBadge(c.company)}</h3>
     <div class="m-work">《他们创造了美国》维度 · 公开商业史整理</div>
@@ -522,17 +604,21 @@ function showCompany(c) {
     ${resoSection(c.company, "company", idx)}
     ${readBtnHtml("c:" + idx)}`;
   $("#modal-mask").classList.add("show");
+  pushModalHash("c", COMPANIES.indexOf(arguments[0]), opts);
   $("#m-close").addEventListener("click", closeModal);
   bindModalChips();
   bindReadButton("c:" + idx);
 }
 
-function showModel(m) {
+function showModel(m, opts) {
   const idx = MODELS.indexOf(m);
   const elTag = m.el && ELEMENTS[m.el]
     ? `<span class="el-tag" style="--ec:${ELEMENTS[m.el].color}">${ELEMENTS[m.el].name}</span>` : "";
   $("#modal").innerHTML = `
-    <button class="m-close" id="m-close">×</button>
+    <div class="m-bar">
+      <button class="m-back" id="m-close">← 返回</button>
+      <button class="m-share-btn" id="m-share">复制本节点链接</button>
+    </div>
     <div class="m-year" style="--sc:#2C74D6">${m.year} 年 · 模式现场 ${elTag}</div>
     <h3>${m.company} · ${m.event} ${resoBadge(m.company)}</h3>
     <div class="m-work">《商业模式全史》维度 · 三谷宏治</div>
@@ -540,15 +626,19 @@ function showModel(m) {
     ${resoSection(m.company, "model", idx)}
     ${readBtnHtml("m:" + idx)}`;
   $("#modal-mask").classList.add("show");
+  pushModalHash("m", MODELS.indexOf(arguments[0]), opts);
   $("#m-close").addEventListener("click", closeModal);
   bindModalChips();
   bindReadButton("m:" + idx);
 }
 
-function showChina(c) {
+function showChina(c, opts) {
   const idx = CHINA_LIST.indexOf(c);
   $("#modal").innerHTML = `
-    <button class="m-close" id="m-close">×</button>
+    <div class="m-bar">
+      <button class="m-back" id="m-close">← 返回</button>
+      <button class="m-share-btn" id="m-share">复制本节点链接</button>
+    </div>
     <div class="m-year" style="--sc:${LINE_META.china.color}">${c.year} 年 · 中国现场</div>
     <h3>${c.company} · ${c.event} ${resoBadge(c.company)}</h3>
     <div class="m-work">中国对照线 · 站方补充,不来自那五本书</div>
@@ -556,15 +646,19 @@ function showChina(c) {
     ${resoSection(c.company, "china", idx)}
     ${readBtnHtml("h:" + idx)}`;
   $("#modal-mask").classList.add("show");
+  pushModalHash("h", CHINA_LIST.indexOf(arguments[0]), opts);
   $("#m-close").addEventListener("click", closeModal);
   bindModalChips();
   bindReadButton("h:" + idx);
 }
 
-function showOrg(o) {
+function showOrg(o, opts) {
   const idx = ORGS.indexOf(o);
   $("#modal").innerHTML = `
-    <button class="m-close" id="m-close">×</button>
+    <div class="m-bar">
+      <button class="m-back" id="m-close">← 返回</button>
+      <button class="m-share-btn" id="m-share">复制本节点链接</button>
+    </div>
     <div class="m-year" style="--sc:#0E9C6B">${o.year} 年 · 组织现场</div>
     <h3>${o.company} · ${o.event} ${resoBadge(o.company)}</h3>
     <div class="m-work">《管理百年》维度 · 斯图尔特·克雷纳</div>
@@ -572,6 +666,7 @@ function showOrg(o) {
     ${resoSection(o.company, "org", idx)}
     ${readBtnHtml("o:" + idx)}`;
   $("#modal-mask").classList.add("show");
+  pushModalHash("o", ORGS.indexOf(arguments[0]), opts);
   $("#m-close").addEventListener("click", closeModal);
   bindModalChips();
   bindReadButton("o:" + idx);
@@ -1265,7 +1360,10 @@ function showPerson(p) {
     return `<button class="rel-chip" data-pkind="${kind}" data-pidx="${idx}">${LINE_META[kind].tag} · ${a.label}</button>`;
   }).join("");
   $("#modal").innerHTML = `
-    <button class="m-close" id="m-close">×</button>
+    <div class="m-bar">
+      <button class="m-back" id="m-close">← 返回</button>
+      <button class="m-share-btn" id="m-share">复制本节点链接</button>
+    </div>
     <div class="m-year" style="--sc:var(--accent)">人物志 · PERSON</div>
     <h3>${p.name}</h3>
     <div class="m-person">${p.role}</div>
@@ -1404,11 +1502,12 @@ updateProgress();
   const wrap = $("#graph-wrap");
   if (!wrap) return;
 
-  const LANES = ["found", "pos", "cap", "learn", "innov"];
+  const LANES = ["found", "pos", "cap", "learn", "innov", "intel"];
   const W = 1460, LANE_H = 112, TOP = 56, BOTTOM = 36;
   const X0 = 110, X1 = 1400;
   const H = TOP + LANES.length * LANE_H + BOTTOM;
-  const yearX = (y) => X0 + (y - 1911) / 100 * (X1 - X0);
+  // 年份轴延到 2026，容纳正在形成中的智能学派
+  const yearX = (y) => X0 + (y - 1911) / 115 * (X1 - X0);
   const laneY = (i) => TOP + i * LANE_H + LANE_H / 2;
 
   // 节点坐标(只画有图谱短名的核心理论,避免拥挤)
@@ -1428,7 +1527,7 @@ updateProgress();
 
   // 泳道与刻度
   let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="学派关系图谱"><defs><marker id="g-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="context-stroke"/></marker></defs>`;
-  for (let y = 1920; y <= 2010; y += 10) {
+  for (let y = 1920; y <= 2020; y += 10) {
     const x = yearX(y);
     svg += `<line x1="${x}" y1="${TOP - 18}" x2="${x}" y2="${H - BOTTOM + 6}" class="g-grid"/>`;
     svg += `<text x="${x}" y="${TOP - 26}" class="g-tick" text-anchor="middle">${y}s</text>`;
@@ -1436,6 +1535,11 @@ updateProgress();
   LANES.forEach((k, i) => {
     const y = laneY(i);
     if (i > 0) svg += `<line x1="20" y1="${TOP + i * LANE_H}" x2="${W - 20}" y2="${TOP + i * LANE_H}" class="g-lane"/>`;
+    // 智能学派仍在形成中：泳道底色标出来，并注明尚无定论
+    if (k === "intel") {
+      svg += `<rect x="20" y="${TOP + i * LANE_H}" width="${W - 40}" height="${LANE_H}" class="g-lane-live"/>`;
+      svg += `<text x="16" y="${y + 18}" class="g-lane-sub">正在形成中</text>`;
+    }
     svg += `<text x="16" y="${y + 4}" class="g-lane-name" fill="${SCHOOLS[k].color}">${SCHOOLS[k].name}</text>`;
   });
 
@@ -1532,3 +1636,98 @@ updateProgress();
     if (g) showDetail(THEORIES[Number(g.dataset.idx)]);
   });
 })();
+
+/* ---------- 首屏应用地址栏状态：支持直接访问 #timeline / #c-12 这类深链接 ---------- */
+(function initRouting() {
+  // 替换掉初始 history 条目，保证第一次 back 能正确回到入口
+  history.replaceState({ page: (location.hash || "#home").replace(/^#/, "") }, "", location.hash || "#home");
+  applyHash();
+})();
+
+/* ---------- 节点弹层的「复制链接」：让任何一个决策现场都能被单独分享 ---------- */
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("#m-share");
+  if (!btn) return;
+  const url = location.origin + location.pathname + location.hash;
+  const done = () => { btn.textContent = "✓ 链接已复制"; setTimeout(() => btn.textContent = "复制本节点链接", 1800); };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(url).then(done).catch(() => {});
+  } else {
+    const ta = document.createElement("textarea");
+    ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (err) {}
+    document.body.removeChild(ta);
+  }
+});
+
+/* ---------- 母题横切索引：按结构组织，而非按线组织 ---------- */
+(function renderMotifs() {
+  const box = $("#motif-list");
+  if (!box || typeof MOTIFS === "undefined") return;
+
+  // 把 "年份|company" 或理论 key 解析成 {kind, idx, obj}
+  function resolve(ref) {
+    const t = THEORIES.findIndex(x => x.key === ref);
+    if (t >= 0) return { kind: "theory", idx: t, obj: THEORIES[t] };
+    const [y, name] = ref.split("|");
+    const year = Number(y);
+    const pools = [["company", COMPANIES], ["model", MODELS], ["org", ORGS], ["china", CHINA_LIST]];
+    for (const [kind, arr] of pools) {
+      const i = arr.findIndex(o => o.year === year && o.company === name);
+      if (i >= 0) return { kind, idx: i, obj: arr[i] };
+    }
+    return null;
+  }
+
+  box.innerHTML = MOTIFS.map((m, mi) => {
+    const items = m.nodes.map(resolve).filter(Boolean)
+      .sort((a, b) => a.obj.year - b.obj.year);
+    const chips = items.map(it => {
+      const label = it.kind === "theory"
+        ? `${it.obj.year} ${it.obj.key}`
+        : `${it.obj.year} ${it.obj.company}`;
+      return `<button class="motif-chip" data-mkind="${it.kind}" data-midx2="${it.idx}"
+        style="--mc:${LINE_META[it.kind].color}">
+        <span class="motif-chip-line">${LINE_META[it.kind].tag}</span>${label}</button>`;
+    }).join("");
+    const span = items.length ? `${items[0].obj.year} — ${items[items.length - 1].obj.year}` : "";
+    return `<article class="motif reveal">
+      <div class="motif-head">
+        <span class="motif-n">${String(mi + 1).padStart(2, "0")}</span>
+        <div>
+          <h3>${m.name}</h3>
+          <div class="motif-meta">${span}　·　${items.length} 个节点</div>
+        </div>
+      </div>
+      <p class="motif-q">${m.question}</p>
+      <p class="motif-insight">${m.insight}</p>
+      <div class="motif-watch"><b>怎么看</b>${m.watch}</div>
+      <div class="motif-chips">${chips}</div>
+    </article>`;
+  }).join("");
+
+  box.addEventListener("click", (e) => {
+    const chip = e.target.closest(".motif-chip");
+    if (!chip) return;
+    const kind = chip.dataset.mkind, idx = Number(chip.dataset.midx2);
+    if (kind === "theory") showDetail(THEORIES[idx]);
+    else openLineItem(kind, idx);
+  });
+})();
+
+/* ---------- 以史鉴今 → 母题：让规律与它的完整证据链直接连起来 ---------- */
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".motif-jump");
+  if (!btn) return;
+  gotoPage("motifs");
+  setTimeout(() => {
+    const idx = (typeof MOTIFS !== "undefined") ? MOTIFS.findIndex(m => m.key === btn.dataset.motif) : -1;
+    const el = $$(".motif")[idx];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.classList.add("flash");
+      setTimeout(() => el.classList.remove("flash"), 1800);
+    }
+  }, 90);
+});

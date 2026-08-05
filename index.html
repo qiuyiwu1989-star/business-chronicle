@@ -186,6 +186,7 @@
     </div>
     <div class="knowledge-tabs" id="knowledge-tabs">
       <button class="active" data-kpanel="cards">节点卡片</button>
+      <button data-kpanel="motifs">母题索引</button>
       <button data-kpanel="books">著作与案例</button>
       <button data-kpanel="glossary">术语词典</button>
       <button data-kpanel="people">人物志</button>
@@ -243,6 +244,16 @@
   </section>
 
   <!-- 人物志 -->
+  <!-- 母题横切索引 -->
+  <section class="knowledge-panel" id="page-motifs">
+    <div class="page-head">
+      <div class="page-head-en">Motifs · 横切索引</div>
+      <h2>母题:同一个结构,<em>反复出现</em></h2>
+      <p>其它面板按「线」组织内容,这里按「结构」组织。八个母题各自把散落在六条线上的节点串成一串——你会看到同一道商业难题，在六百年里换了外衣反复重考。</p>
+    </div>
+    <div class="motif-list" id="motif-list"></div>
+  </section>
+
   <section class="knowledge-panel" id="page-people">
     <div class="page-head">
       <div class="page-head-en">People</div>
@@ -381,7 +392,7 @@
     <div class="page-head">
       <div class="page-head-en">Genealogy of Ideas</div>
       <h2>学派<em>关系图谱</em></h2>
-      <p>五条学派泳道 × 百年时间轴。悬停查看关系,点击节点打开理论详情。</p>
+      <p>六条学派泳道 × 百年时间轴。最后一条「智能学派」仍在形成中——收录的是当下正在被提出、尚未成为定论的框架。悬停查看关系,点击节点打开理论详情。</p>
     </div>
     <div class="graph-legend">
       <span class="gl-item"><i class="gl-line"></i>影响与传承</span>
@@ -457,7 +468,8 @@
         <h3>护城河一直在迁移</h3>
         <p class="insight-ev"><span>历史证据</span>规模(经验曲线)→ 位置(五力)→ 资源与能力(RBV)→ 网络效应与生态(平台)。每一代护城河都被下一代绕过,而非填平。</p>
         <p class="insight-future"><span>对未来的启示</span>下一代护城河大概率是「独有数据 × 迭代速度」。盘点资产时,把数据和学习速率也算进去。
-        <button class="btn ghost ev-btn" data-decade="1980">看证据 · 1980s →</button></p>
+        <button class="btn ghost ev-btn" data-decade="1980">看证据 · 1980s →</button>
+        <button class="btn ghost motif-jump" data-motif="moat">看完整迁移链 · 母题 →</button></p>
       </div>
       <div class="card insight reveal">
         <div class="insight-num">05</div>

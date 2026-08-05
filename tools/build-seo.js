@@ -20,7 +20,7 @@ vm.createContext(ctx);
 vm.runInContext(
   fs.readFileSync(path.join(root, "data.v22.js"), "utf8") +
   ";globalThis.__D__={THEORIES,COMPANIES,MODELS,ORGS,GLOSSARY,PEOPLE,ERAS,SCHOOLS,SCHOOL_COMPARE,THEORY_DETAILS,THEORY_GUIDES,THEORY_LIMITS,ELEMENTS," +
-  "CHINA:(typeof CHINA!=='undefined'?CHINA:[]),ACTS:(typeof ACTS!=='undefined'?ACTS:[])};",
+  "CHINA:(typeof CHINA!=='undefined'?CHINA:[]),ACTS:(typeof ACTS!=='undefined'?ACTS:[]),MOTIFS:(typeof MOTIFS!=='undefined'?MOTIFS:[])};",
   ctx
 );
 const D = ctx.__D__;
@@ -111,6 +111,22 @@ if (D.ACTS.length) {
   });
 }
 
+/* 母题横切索引 */
+if (D.MOTIFS.length) {
+  L.push("## 四之四、母题：同一个商业结构反复出现");
+  L.push("");
+  L.push("按结构（而非按线）组织的横切索引。每个母题把散落在各条线上的节点串成一串。");
+  L.push("");
+  D.MOTIFS.forEach((m, i) => {
+    L.push(`### 母题 ${String(i + 1).padStart(2, "0")} ｜ ${m.name}`);
+    L.push(`- 它问的问题：${m.question}`);
+    L.push(`- 规律：${m.insight}`);
+    L.push(`- 怎么看：${m.watch}`);
+    L.push(`- 串起的节点：${m.nodes.join("、")}`);
+    L.push("");
+  });
+}
+
 /* 学派之争 */
 L.push("## 五、学派之争：定位学派 vs 能力学派");
 L.push("");
@@ -167,24 +183,27 @@ const nav = `# 商业通鉴 · 五本书里的百年商业史
 
 ## 完整内容（推荐直接读这个）
 
-- [全站内容纯文本导出](${BASE}/llms-full.txt)：全部 ${D.THEORIES.length + D.COMPANIES.length + D.MODELS.length + D.ORGS.length} 个节点的完整内容，含决策现场五问、理论深度解读、术语词典与人物志。**本站页面由 JS 渲染，抓取请用此文件。**
+- [全站内容纯文本导出](${BASE}/llms-full.txt)：全部 ${D.THEORIES.length + D.COMPANIES.length + D.MODELS.length + D.ORGS.length + D.CHINA.length} 个节点的完整内容，含决策现场五问、理论深度解读、术语词典与人物志。**本站页面由 JS 渲染，抓取请用此文件。**
 
 ## 内容构成
 
-- 理论线 ${D.THEORIES.length} 节点：百年战略思想的学派之争（源自《经营战略全史》三谷宏治）
+- 理论线 ${D.THEORIES.length} 节点：百年战略思想的学派之争（源自《经营战略全史》三谷宏治，另补正在形成中的「智能学派」）
 - 企业线 ${D.COMPANIES.length} 节点：革新者如何把发明推向大众（源自《他们创造了美国》哈罗德·埃文斯）
 - 模式线 ${D.MODELS.length} 节点：赚钱方式的进化与转世（源自《商业模式全史》三谷宏治）
 - 组织线 ${D.ORGS.length} 节点：组织形态与管理实践的进化（源自《管理百年》斯图尔特·克雷纳）
+- 中国对照线 ${D.CHINA.length} 节点：1823 票号 → 2023 大模型（站方补充，不来自那五本书）
 - 著作线 34 部经典 + 术语词典 ${D.GLOSSARY.length} 条 + 人物志
+- 六幕商业史 ${D.ACTS.length} 幕（叙事主线）+ 母题横切索引 ${D.MOTIFS.length} 条（按结构组织，不按线组织）
 
 横切透镜来自《新经营学》：商业模式 = 目标 × 价值 × 能力 × 收益。
 
 ## 视图
 
-- [时间线](${BASE}/#timeline)：五轨对照或单线细读，带时代分层
-- [知识库](${BASE}/#knowledge)：节点卡片、著作与案例、术语词典、人物志、学派之争
-- [关系图谱](${BASE}/#graph)：理论谱系，谁影响谁、谁批判谁
-- [以史鉴今](${BASE}/#insights)：七条百年规律与战略判断仪表盘
+- [时间线](${BASE}/#timeline)：六轨对照或单线细读，带时代分层
+- [知识库](${BASE}/#knowledge)：节点卡片、母题索引、著作与案例、术语词典、人物志、学派之争
+- [母题索引](${BASE}/#motifs)：八个反复出现的商业结构，按结构串联全部节点
+- [关系图谱](${BASE}/#graph)：理论谱系，含正在形成中的智能学派
+- [以史鉴今](${BASE}/#insights)：八条百年规律、战略判断仪表盘与三步判断法
 - [测验](${BASE}/#quiz)：10 道知识题 + 8 道情景题
 
 ## 内容纪律
@@ -203,6 +222,7 @@ const views = [
   ["/", "1.0", "weekly"],
   ["/#timeline", "0.9", "weekly"],
   ["/#knowledge", "0.9", "weekly"],
+  ["/#motifs", "0.85", "weekly"],
   ["/#graph", "0.7", "monthly"],
   ["/#insights", "0.8", "monthly"],
   ["/#quiz", "0.6", "monthly"],

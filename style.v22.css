@@ -1077,6 +1077,12 @@ html[data-theme="dark"] .tl-item::before, html[data-theme="dark"] .tcard .y {
 .g-grid { stroke: var(--bdr-soft); stroke-width: 1; }
 .g-tick { font-family: var(--latin); font-size: 11px; fill: var(--fg3); letter-spacing: .06em; }
 .g-lane { stroke: var(--bdr-soft); stroke-width: 1; stroke-dasharray: 3 5; }
+/* 智能学派泳道：正在形成中，视觉上与已成定论的学派区分 */
+.g-lane-live { fill: rgba(8, 145, 178, .06); }
+.g-lane-sub {
+  font-family: var(--mono); font-size: 10px;
+  fill: #0891B2; opacity: .8; letter-spacing: .04em;
+}
 .g-lane-name { font-size: 12px; font-weight: 600; letter-spacing: .04em; font-family: var(--sans); }
 html[data-theme="dark"] .g-lane-name { filter: brightness(1.4); }
 .g-edge {
@@ -1217,11 +1223,27 @@ html[data-theme="dark"] .q-explain { color: #f0cf92; }
 .modal h3 { font-size: 28px; font-weight: 600; margin: 10px 0 6px; }
 .modal .m-person { color: var(--fg2); font-size: 15px; font-weight: 500; }
 .modal .m-work { color: var(--fg3); font-size: 14px; margin-top: 2px; }
-.modal .m-close {
-  position: absolute; top: 18px; right: 22px; background: none; border: none;
-  color: var(--fg3); font-size: 26px; cursor: pointer; transition: color .15s;
+/* 弹层顶部操作条：返回 + 复制链接。返回同时回退一步历史，与浏览器返回键一致 */
+.m-bar {
+  position: sticky; top: 0; z-index: 3;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin: -6px -6px 14px; padding: 10px 6px 12px;
+  background: var(--card);
+  border-bottom: 1px solid var(--bdr);
 }
-.modal .m-close:hover { color: var(--err); }
+.modal .m-back {
+  font-family: var(--mono); font-size: 13px; font-weight: 600;
+  background: none; border: 1px solid var(--bdr); border-radius: 999px;
+  padding: 7px 16px; color: var(--fg); cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.modal .m-back:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.modal .m-share-btn {
+  font-family: var(--mono); font-size: 12px;
+  background: none; border: none; color: var(--fg3);
+  cursor: pointer; padding: 7px 4px; transition: color .15s;
+}
+.modal .m-share-btn:hover { color: var(--accent); }
 .m-sec { margin-top: 22px; }
 .m-sec h4 {
   font-family: var(--mono);
@@ -1644,3 +1666,52 @@ html[data-theme="dark"] .q-explain { color: #f0cf92; }
   .book-meta i { margin-left: 0; }
   .book-card h3 { font-size: 19px; }
 }
+
+/* ---------- 母题横切索引 ---------- */
+.motif-list { display: grid; gap: 16px; }
+.motif {
+  background: var(--card); border: 1px solid var(--bdr);
+  border-radius: 16px; padding: 28px 30px; box-shadow: var(--sh1);
+  transition: border-color .15s, box-shadow .15s;
+}
+.motif:hover { border-color: var(--line-2); box-shadow: var(--sh2); }
+.motif-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+.motif-n {
+  font-family: var(--latin); font-size: 30px; font-weight: 700;
+  color: var(--accent); line-height: 1; padding-top: 2px;
+}
+.motif-head h3 { font-size: 21px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+.motif-meta { font-family: var(--mono); font-size: 12px; color: var(--fg3); }
+.motif-q {
+  font-size: 16px; font-weight: 600; color: var(--fg);
+  padding-left: 14px; border-left: 3px solid var(--accent); margin-bottom: 12px;
+}
+.motif-insight { font-size: 15px; line-height: 1.78; color: var(--fg2); margin-bottom: 14px; }
+.motif-watch {
+  font-size: 13.5px; line-height: 1.65; color: var(--fg2);
+  background: rgba(178, 106, 0, .07); border-left: 3px solid var(--warn);
+  border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 16px;
+}
+.motif-watch b {
+  display: block; font-family: var(--mono); font-size: 11px;
+  letter-spacing: .08em; color: var(--warn); margin-bottom: 4px;
+}
+.motif-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.motif-chip {
+  display: inline-flex; align-items: baseline; gap: 7px;
+  font-family: inherit; font-size: 13px;
+  padding: 7px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--bdr); background: transparent; color: var(--fg);
+  transition: border-color .15s, background .15s;
+}
+.motif-chip:hover { border-color: var(--mc); background: color-mix(in srgb, var(--mc) 8%, transparent); }
+.motif-chip-line {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .04em;
+  color: var(--mc); font-weight: 600;
+}
+@media (max-width: 720px) {
+  .motif { padding: 22px 18px; }
+  .motif-head h3 { font-size: 19px; }
+  .motif-n { font-size: 24px; }
+}
+.motif.flash { background: var(--accent-soft); transition: background .8s; }
