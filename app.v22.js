@@ -1503,11 +1503,11 @@ updateProgress();
   if (!wrap) return;
 
   const LANES = ["found", "pos", "cap", "learn", "innov", "intel"];
-  const W = 1460, LANE_H = 112, TOP = 56, BOTTOM = 36;
+  const W = 1460, LANE_H = 112, TOP = 56, BOTTOM = 92;   // BOTTOM 加大：最后一条泳道的标签只能向下排
   const X0 = 110, X1 = 1400;
   const H = TOP + LANES.length * LANE_H + BOTTOM;
   // 年份轴延到 2026，容纳正在形成中的智能学派
-  const yearX = (y) => X0 + (y - 1911) / 115 * (X1 - X0);
+  const yearX = (y) => X0 + (y - 1911) / 122 * (X1 - X0);
   const laneY = (i) => TOP + i * LANE_H + LANE_H / 2;
 
   // 节点坐标(只画有图谱短名的核心理论,避免拥挤)
@@ -1567,14 +1567,17 @@ updateProgress();
     { name: -60, year: -46 }
   ];
   const labelPlan = {};
-  LANES.forEach((k) => {
+  LANES.forEach((k, li) => {
     const laneNodes = nodes.filter(n => n.t.school === k).sort((a, b) => a.x - b.x);
     const lastRight = LEVELS.map(() => -Infinity);
+    // 最后一条泳道下方没有别的泳道，标签只允许向下（level 0/1），
+    // 否则会叠进上一条泳道，让读者误以为节点属于上一个学派。
+    const allowed = li === LANES.length - 1 ? [0, 1] : LEVELS.map((_, i) => i);
     laneNodes.forEach(n => {
       const wEst = n.short.length * 13 + 6;
       const tx = Math.min(Math.max(n.x, X0 - 20), X1 + 6);
-      let lvl = LEVELS.length - 2;
-      for (let i = 0; i < LEVELS.length; i++) {
+      let lvl = allowed[allowed.length - 1];
+      for (const i of allowed) {
         if (tx - wEst / 2 > lastRight[i] + 8) { lvl = i; break; }
       }
       lastRight[lvl] = tx + wEst / 2;
