@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>商业通鉴 · 五本书里的百年商业史</title>
-<meta name="description" content="从美第奇的汇票到 ChatGPT。把五本商业史著作叠成五条可对照的时间线，每个节点还原决策现场：当事人面对什么局面、做了什么反共识选择、同时代谁做了相反选择并输了、今天什么生意是同一结构。不是知识库，是一台练判断的机器。">
+<meta name="description" content="从美第奇的汇票到 ChatGPT。把五本商业史著作叠成六条可对照的时间线，每个节点还原决策现场：当事人面对什么局面、做了什么反共识选择、同时代谁做了相反选择并输了、今天什么生意是同一结构。不是知识库，是一台练判断的机器。">
 <meta name="keywords" content="商业史,经营战略全史,商业模式全史,管理百年,他们创造了美国,新经营学,战略理论,商业模式,组织进化,三谷宏治,波特,德鲁克">
 <meta name="author" content="邱懿武">
 <link rel="canonical" href="https://shangye.qiuyiwu.com/">
@@ -13,12 +13,12 @@
 <meta property="og:site_name" content="商业通鉴">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:title" content="商业通鉴 · 五本书里的百年商业史">
-<meta property="og:description" content="五本书、五条时间线叠在一起。每个赢家旁边放一个真实的输家——不是商业史知识库，是一台练判断的机器。">
+<meta property="og:description" content="五本书、六条时间线叠在一起。每个赢家旁边放一个真实的输家——不是商业史知识库，是一台练判断的机器。">
 <meta property="og:url" content="https://shangye.qiuyiwu.com/">
 <meta property="og:image" content="https://shangye.qiuyiwu.com/assets/og-cover.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="商业通鉴 · 五本书里的百年商业史">
-<meta name="twitter:description" content="五本书、五条时间线叠在一起。每个赢家旁边放一个真实的输家——不是商业史知识库，是一台练判断的机器。">
+<meta name="twitter:description" content="五本书、六条时间线叠在一起。每个赢家旁边放一个真实的输家——不是商业史知识库，是一台练判断的机器。">
 <meta name="twitter:image" content="https://shangye.qiuyiwu.com/assets/og-cover.png">
 <meta name="theme-color" content="#5A4FE6">
 <link rel="manifest" href="./manifest.webmanifest">
@@ -32,7 +32,7 @@
   "alternateName": "Business Chronicle · 五本书里的百年商业史",
   "url": "https://shangye.qiuyiwu.com/",
   "inLanguage": "zh-CN",
-  "description": "把五本商业史著作叠成五条可对照的时间线，每个历史节点还原决策现场：局面、抉择、同时代的对照、后续命运、今日回声。",
+  "description": "把五本商业史著作叠成六条可对照的时间线，每个历史节点还原决策现场：局面、抉择、同时代的对照、后续命运、今日回声。",
   "author": { "@type": "Person", "name": "邱懿武" },
   "about": [
     { "@type": "Thing", "name": "商业史" },
@@ -83,7 +83,7 @@
   <section class="page active" id="page-home">
     <div class="hero">
       <div class="hero-text">
-        <p class="hero-kicker">Business Chronicle · 五本书 × 五条时间线</p>
+        <p class="hero-kicker">Business Chronicle · 五本书 × <b id="hs-lines">六</b>条时间线</p>
         <h1>百年商业史,<br><em>五本书读懂</em>.</h1>
         <p class="hero-sub">从美第奇的汇票到 ChatGPT —— <b id="hs-t">34</b> 个理论节点、<b id="hs-c">49</b> 个企业现场、<b id="hs-m">29</b> 种商业模式、<b id="hs-o">20</b> 次组织进化<span id="hs-china-frag">、<b id="hs-ch">24</b> 个中国现场</span>与 <b id="hs-w">34</b> 本经典著作,五本书、六条线叠在一起,让百年商业史 <em>规律自现</em>.</p>
         <div class="hero-actions">
@@ -113,7 +113,7 @@
       <div class="acts-head">
         <div class="eyebrow">Six Acts · 叙事主线</div>
         <h3>六幕商业史</h3>
-        <p>六百年被压成六幕。每一幕回答一个当时最要命的问题——把 132 个节点串起来看，你会发现同一道题一直在换皮重考。</p>
+        <p>六百年被压成六幕。每一幕回答一个当时最要命的问题——把 <b id="hs-total">163</b> 个节点串起来看，你会发现同一道题一直在换皮重考。</p>
       </div>
       <div class="acts-grid" id="acts-grid"></div>
     </div>
@@ -121,7 +121,7 @@
     <div class="home-grid">
       <div class="card reveal">
         <div class="eyebrow">About the Books</div>
-        <h3>五本书,五个视角</h3>
+        <h3>五本书,五个视角(外加一条中国对照)</h3>
         <p>同一个百年,几本书各看一面。叠在一起,规律自现:</p>
         <ul>
           <li><b>《经营战略全史》</b>(三谷宏治)看“思想”——百年战略理论的学派之争;</li>
@@ -713,7 +713,17 @@
 </main>
 
 <footer class="footer">
-  <p>本站为《经营战略全史》《商业模式全史》《新经营学》(三谷宏治 著)、《他们创造了美国》(哈罗德·埃文斯 著)、《管理百年》(斯图尔特·克雷纳 著)的学习辅助站点。所有摘要均为整理者按公开知识自行撰写,<b>非原书文字摘录</b>;中国对照线、智能学派、六幕叙事与母题索引为站方补充,不来自上述著作。<button class="footer-link" data-goto="method">内容来源、写作红线与已知存疑 →</button></p>
+  <p>本站为《经营战略全史》《商业模式全史》《新经营学》(三谷宏治 著)、《他们创造了美国》(哈罗德·埃文斯 著)、《管理百年》(斯图尔特·克雷纳 著)的学习辅助站点。所有摘要均为整理者按公开知识自行撰写,<b>非原书文字摘录</b>;中国对照线、智能学派、六幕叙事与母题索引为站方补充,不来自上述著作。</p>
+  <nav class="footer-nav" aria-label="站点信息">
+    <button class="footer-link" data-goto="method">内容来源与已知存疑</button>
+    <span class="footer-sep" aria-hidden="true">·</span>
+    <a class="footer-link" href="https://github.com/qiuyiwu1989-star/business-chronicle" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      源码与内容开源 · GitHub
+    </a>
+    <span class="footer-sep" aria-hidden="true">·</span>
+    <a class="footer-link" href="./llms-full.txt" target="_blank" rel="noopener">全站内容纯文本</a>
+  </nav>
 </footer>
 
 <!-- 详情弹层 -->

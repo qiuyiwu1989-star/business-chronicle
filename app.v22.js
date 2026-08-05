@@ -171,6 +171,15 @@ function updateProgress() {
   pairs.forEach(([id, n]) => { const el = $("#" + id); if (el) el.textContent = n; });
   // 中国对照线：有数据才在首页文案里出现
   const hasChina = typeof CHINA !== "undefined" && Array.isArray(CHINA) && CHINA.length > 0;
+  // 线数与节点总数也从数据生成，杜绝加线后文案不同步
+  const lineCount = 4 + (typeof CHINA !== "undefined" && CHINA.length ? 1 : 0) + 1;  // 四条现场线 + 中国线 + 著作线
+  const nEl = $("#hs-lines");
+  if (nEl) nEl.textContent = "一二三四五六七八九"[lineCount - 1] || lineCount;
+  const totalEl = $("#hs-total");
+  if (totalEl) {
+    const china = (typeof CHINA !== "undefined" && CHINA.length) ? CHINA.length : 0;
+    totalEl.textContent = THEORIES.length + COMPANIES.length + MODELS.length + ORGS.length + china;
+  }
   const chinaFrag = $("#hs-china-frag");
   if (chinaFrag) {
     chinaFrag.style.display = hasChina ? "" : "none";

@@ -1756,11 +1756,20 @@ html[data-theme="dark"] .q-explain { color: #f0cf92; }
 }
 .method-foot p { font-size: 15px; line-height: 1.78; color: var(--fg2); }
 
-.footer-link {
-  background: none; border: none; padding: 0; margin-left: 6px;
-  font-family: inherit; font-size: inherit; color: var(--accent);
-  cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
+.footer-nav {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 6px 10px; margin-top: 14px;
 }
+.footer-sep { color: var(--fg3); opacity: .5; font-size: 12px; }
+.footer-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: none; padding: 0;
+  font-family: inherit; font-size: 13px; color: var(--fg3);
+  cursor: pointer; text-decoration: none;
+  transition: color .15s;
+}
+.footer-link:hover { color: var(--accent); }
+.footer-link svg { flex-shrink: 0; }
 @media (max-width: 720px) {
   .method-block { padding: 22px 18px; }
   .method-block h3 { font-size: 18px; }
