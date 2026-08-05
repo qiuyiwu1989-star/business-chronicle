@@ -19,7 +19,8 @@ const ctx = {};
 vm.createContext(ctx);
 vm.runInContext(
   fs.readFileSync(path.join(root, "data.v22.js"), "utf8") +
-  ";globalThis.__D__={THEORIES,COMPANIES,MODELS,ORGS,GLOSSARY,PEOPLE,ERAS,SCHOOLS,SCHOOL_COMPARE,THEORY_DETAILS,THEORY_GUIDES,THEORY_LIMITS,ELEMENTS};",
+  ";globalThis.__D__={THEORIES,COMPANIES,MODELS,ORGS,GLOSSARY,PEOPLE,ERAS,SCHOOLS,SCHOOL_COMPARE,THEORY_DETAILS,THEORY_GUIDES,THEORY_LIMITS,ELEMENTS," +
+  "CHINA:(typeof CHINA!=='undefined'?CHINA:[]),ACTS:(typeof ACTS!=='undefined'?ACTS:[])};",
   ctx
 );
 const D = ctx.__D__;
@@ -67,6 +68,9 @@ const SITE_LINES = [
   ["三、模式线：商业模式的进化与转世", D.MODELS, "商业模式"],
   ["四、组织线：组织形态与管理实践", D.ORGS, "组织进化"]
 ];
+if (D.CHINA.length) {
+  SITE_LINES.push(["四之二、中国对照线：从票号到大模型（站方补充，不来自那五本书）", D.CHINA, "中国现场"]);
+}
 SITE_LINES.forEach(([title, arr]) => {
   L.push(`## ${title}（${arr.length} 个节点）`);
   L.push("");
@@ -88,6 +92,22 @@ SITE_LINES.forEach(([title, arr]) => {
     L.push("");
   });
 });
+
+/* 六幕叙事 */
+if (D.ACTS.length) {
+  L.push("## 四之三、六幕商业史（叙事主线）");
+  L.push("");
+  L.push("把全部节点串成一条故事线，每一幕回答一个当时最要命的问题。");
+  L.push("");
+  D.ACTS.forEach(a => {
+    L.push(`### 第 ${a.no} 幕 ｜ ${a.title}（${a.span}）`);
+    L.push(`- 主线：${a.thesis}`);
+    L.push(`- 导读：${a.body}`);
+    L.push(`- 留给读者的问题：${a.ask}`);
+    L.push(`- 转折点：${(a.pivot || []).join("、")}`);
+    L.push("");
+  });
+}
 
 /* 学派之争 */
 L.push("## 五、学派之争：定位学派 vs 能力学派");

@@ -81,20 +81,35 @@ function toggleReadK(key) {
 function toggleRead(idx) { return toggleReadK("t:" + idx); }
 function updateProgress() {
   const set = loadRead();
+  const hasChina = typeof CHINA !== "undefined" && Array.isArray(CHINA) && CHINA.length > 0;
   const totals = { t: THEORIES.length, c: COMPANIES.length, m: MODELS.length, o: ORGS.length };
-  const done = { t: 0, c: 0, m: 0, o: 0 };
+  if (hasChina) totals.h = CHINA.length;
+  const done = {};
+  Object.keys(totals).forEach(k => done[k] = 0);
   set.forEach(k => { const p = k.slice(0, 1); if (done[p] !== undefined) done[p]++; });
-  const total = totals.t + totals.c + totals.m + totals.o;
-  const dn = done.t + done.c + done.m + done.o;
+  const total = Object.values(totals).reduce((a, b) => a + b, 0);
+  const dn = Object.values(done).reduce((a, b) => a + b, 0);
   const el = $("#lp-text");
   if (el) el.textContent = dn + " / " + total;
-  [["t", totals.t, done.t], ["c", totals.c, done.c], ["m", totals.m, done.m], ["o", totals.o, done.o]]
-    .forEach(([p, tot, d]) => {
-      const bar = $("#lp-" + p), num = $("#lp-" + p + "n");
-      if (bar) bar.style.width = (d / tot * 100) + "%";
-      if (num) num.textContent = d + "/" + tot;
-    });
+  // 中国线进度条按需插入,数据缺失时该行自动隐藏
+  const chinaLine = $("#lp-line-h");
+  if (chinaLine) chinaLine.style.display = hasChina ? "" : "none";
+  Object.keys(totals).forEach(p => {
+    const bar = $("#lp-" + p), num = $("#lp-" + p + "n");
+    if (bar) bar.style.width = (done[p] / totals[p] * 100) + "%";
+    if (num) num.textContent = done[p] + "/" + totals[p];
+  });
 }
+
+/* ---------- 滚动条宽度：供全宽出血元素补偿 100vw 与 100% 的差 ---------- */
+(function trackScrollbarWidth() {
+  const set = () => {
+    const w = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty("--sbw", Math.max(0, w) + "px");
+  };
+  set();
+  window.addEventListener("resize", set);
+})();
 
 /* ---------- 首页文案数字：从数据实时生成,防止口径漂移 ---------- */
 (function syncHeroCounts() {
@@ -102,6 +117,14 @@ function updateProgress() {
   const pairs = [["hs-t", THEORIES.length], ["hs-c", COMPANIES.length],
                  ["hs-m", MODELS.length], ["hs-o", ORGS.length], ["hs-w", works.size]];
   pairs.forEach(([id, n]) => { const el = $("#" + id); if (el) el.textContent = n; });
+  // 中国对照线：有数据才在首页文案里出现
+  const hasChina = typeof CHINA !== "undefined" && Array.isArray(CHINA) && CHINA.length > 0;
+  const chinaFrag = $("#hs-china-frag");
+  if (chinaFrag) {
+    chinaFrag.style.display = hasChina ? "" : "none";
+    const n = $("#hs-ch");
+    if (n && hasChina) n.textContent = CHINA.length;
+  }
 })();
 
 /* ---------- 首页统计 ---------- */
@@ -112,9 +135,12 @@ function updateProgress() {
     [THEORIES.length, "理论节点"],
     [COMPANIES.length, "企业现场"],
     [MODELS.length, "商业模式"],
-    [ORGS.length, "组织进化"],
-    [QUIZ.length, "自测题目"]
+    [ORGS.length, "组织进化"]
   ];
+  if (typeof CHINA !== "undefined" && Array.isArray(CHINA) && CHINA.length) {
+    stats.push([CHINA.length, "中国对照"]);
+  }
+  stats.push([QUIZ.length, "自测题目"]);
   $("#home-stats").innerHTML = stats.map(s =>
     `<div class="stat reveal"><b>${s[0]}</b><span>${s[1]}</span></div>`).join("");
 })();
@@ -185,6 +211,9 @@ const RESO = (function () {
   COMPANIES.forEach((c, i) => add("company", i, c.company, c));
   MODELS.forEach((m, i) => add("model", i, m.company, m));
   ORGS.forEach((o, i) => add("org", i, o.company, o));
+  if (typeof CHINA !== "undefined" && Array.isArray(CHINA)) {
+    CHINA.forEach((c, i) => add("china", i, c.company, c));
+  }
   const out = {};
   Object.entries(map).forEach(([n, arr]) => {
     if (new Set(arr.map(a => a.kind)).size >= 2) out[n] = arr;
@@ -202,6 +231,7 @@ function openLineItem(kind, idx) {
   if (kind === "company") showCompany(COMPANIES[idx]);
   else if (kind === "model") showModel(MODELS[idx]);
   else if (kind === "org") showOrg(ORGS[idx]);
+  else if (kind === "china" && typeof CHINA !== "undefined") showChina(CHINA[idx]);
 }
 // 弹层底部的"共振 + 关联理论"区块
 function resoSection(name, currentKind, currentIdx) {
@@ -307,7 +337,8 @@ function boundaryFor(kind, o) {
   const base = {
     company: "不要把企业现场当成可照抄剧本。它依赖当时的技术窗口、资本条件、监管环境和组织能力。",
     model: "商业模式成立不等于永远成立。它依赖获客成本、履约能力、信任机制和收益结构的平衡。",
-    org: "组织实践不能脱离规模、文化和人才密度。结构或制度被照搬时,常常只复制形式,复制不了行为。"
+    org: "组织实践不能脱离规模、文化和人才密度。结构或制度被照搬时,常常只复制形式,复制不了行为。",
+    china: "中国现场高度依赖当时的市场发育程度、要素成本与制度环境,跨时空照搬同一做法,通常复制不了同样的结果。"
   }[kind] || "这个节点需要结合具体环境判断,不能机械套用。";
   if (kind === "model" && o.el && ELEMENTS[o.el]) {
     return `${base} 这个模式主要改变的是“${ELEMENTS[o.el].name}”,若其它三要素跟不上,模式会失衡。`;
@@ -320,7 +351,8 @@ function costFor(kind, o) {
   const generic = {
     company: "代价通常藏在规模、资本开支、组织复杂度或外部监管里;越成功的企业现场,越可能制造新的约束。",
     model: "代价通常是对伙伴、渠道、库存、补贴或信任系统的持续投入;模式越轻,越要警惕关键能力外包。",
-    org: "代价通常是协调成本、角色冲突和文化摩擦;组织工具越强,越需要清晰边界。"
+    org: "代价通常是协调成本、角色冲突和文化摩擦;组织工具越强,越需要清晰边界。",
+    china: "代价通常藏在增长速度与治理能力的落差里;跑得越快,补制度与信任的课就越贵。"
   }[kind] || "任何原则迁移都需要付出适配成本。";
   return generic;
 }
@@ -500,6 +532,22 @@ function showModel(m) {
   bindReadButton("m:" + idx);
 }
 
+function showChina(c) {
+  const idx = CHINA_LIST.indexOf(c);
+  $("#modal").innerHTML = `
+    <button class="m-close" id="m-close">×</button>
+    <div class="m-year" style="--sc:${LINE_META.china.color}">${c.year} 年 · 中国现场</div>
+    <h3>${c.company} · ${c.event} ${resoBadge(c.company)}</h3>
+    <div class="m-work">中国对照线 · 站方补充,不来自那五本书</div>
+    ${deepSections(c, "经过", "china")}
+    ${resoSection(c.company, "china", idx)}
+    ${readBtnHtml("h:" + idx)}`;
+  $("#modal-mask").classList.add("show");
+  $("#m-close").addEventListener("click", closeModal);
+  bindModalChips();
+  bindReadButton("h:" + idx);
+}
+
 function showOrg(o) {
   const idx = ORGS.indexOf(o);
   $("#modal").innerHTML = `
@@ -528,8 +576,20 @@ const LINE_META = {
   company: { tag: "企业现场", color: "#B77A22" },
   model:   { tag: "商业模式", color: "#2C74D6" },
   org:     { tag: "组织进化", color: "#0E9C6B" },
+  china:   { tag: "中国对照", color: "#E05A2B" },
   work:    { tag: "著作线", color: "#D8474F" }
 };
+// 中国线数据可选:未定义时全站自动降级为五条线,不报错
+const HAS_CHINA = typeof CHINA !== "undefined" && Array.isArray(CHINA) && CHINA.length > 0;
+const CHINA_LIST = HAS_CHINA ? CHINA : [];
+(function toggleChinaUI() {
+  ["#tl-mode-china", "#card-mode-china"].forEach(sel => {
+    const el = $(sel);
+    if (el) el.style.display = HAS_CHINA ? "" : "none";
+  });
+  const allBtn = $("#tl-mode-all");
+  if (allBtn) allBtn.textContent = HAS_CHINA ? "六轨对照" : "五轨对照";
+})();
 
 function renderTimelineScale() {
   const minY = (tlMode === "model" || tlMode === "both") ? 1397
@@ -655,10 +715,13 @@ const ERA_NOTES = {
 
 /* 五轨对照:按年代分行(纬)、五线分列(经),同年代自然对齐 */
 function renderSync(list) {
+  const LINE_ORDER = ["theory", "company", "model", "org"]
+    .concat(HAS_CHINA ? ["china"] : []).concat(["work"]);
   const buckets = new Map();
+  const emptyBucket = () => LINE_ORDER.reduce((a, k) => (a[k] = [], a), {});
   const put = (year, kind, obj) => {
     const d = Math.floor(year / 10) * 10;
-    if (!buckets.has(d)) buckets.set(d, { theory: [], company: [], model: [], org: [], work: [] });
+    if (!buckets.has(d)) buckets.set(d, emptyBucket());
     buckets.get(d)[kind].push(obj);
   };
   list.forEach(t => {
@@ -668,16 +731,19 @@ function renderSync(list) {
   COMPANIES.forEach(c => put(c.year, "company", c));
   MODELS.forEach(m => put(m.year, "model", m));
   ORGS.forEach(o => put(o.year, "org", o));
+  CHINA_LIST.forEach(c => put(c.year, "china", c));
 
   const mini = (kind, o) => {
     const idx = kind === "theory" || kind === "work" ? THEORIES.indexOf(o)
       : kind === "company" ? COMPANIES.indexOf(o)
-      : kind === "model" ? MODELS.indexOf(o) : ORGS.indexOf(o);
+      : kind === "model" ? MODELS.indexOf(o)
+      : kind === "china" ? CHINA_LIST.indexOf(o) : ORGS.indexOf(o);
     const title = kind === "theory" ? o.key : kind === "work" ? o.work : `${o.company} · ${o.event}`;
     const attr = kind === "theory" ? `data-idx="${idx}"`
       : kind === "work" ? `data-widx="${idx}"`
       : kind === "company" ? `data-cidx="${idx}"`
-      : kind === "model" ? `data-midx="${idx}"` : `data-oidx="${idx}"`;
+      : kind === "model" ? `data-midx="${idx}"`
+      : kind === "china" ? `data-chidx="${idx}"` : `data-oidx="${idx}"`;
     const badge = kind === "theory" || kind === "work" ? "" : resoBadge(o.company);
     const brief = kind === "work" ? `${o.person} · ${o.key}` : o.brief;
     return `<div class="mini ${kind}" ${attr}>
@@ -688,27 +754,28 @@ function renderSync(list) {
 
   const rows = Array.from(buckets.keys()).sort((a, b) => a - b).map(d => {
     const b = buckets.get(d);
-    const lineOrder = ["theory", "company", "model", "org", "work"];
-    const cells = lineOrder.map(k =>
+    const cells = LINE_ORDER.map(k =>
       `<div class="sync-cell sync-cell-${k} ${b[k].length ? "" : "empty"}">
         ${b[k].length ? `<span class="sync-mobile-head">${LINE_META[k].tag}</span>` : ""}
         ${b[k].map(o => mini(k, o)).join("")}
       </div>`).join("");
-    return `<div class="sync-row" id="era-${d}" style="--cols:5">
+    return `<div class="sync-row" id="era-${d}" style="--cols:${LINE_ORDER.length}">
       <div class="sync-era"><b>${d}s</b><span>${ERA_NOTES[d] || "这一时期的理论、企业与模式在同一商业环境中相互回应。"}</span></div>
       ${cells}
     </div>`;
   }).join("");
 
+  const HEAD_LABEL = {
+    theory: ["理论线", "var(--accent)"], company: ["企业线", "var(--warn)"],
+    model: ["模式线", "var(--info)"], org: ["组织线", "var(--ok)"],
+    china: ["中国对照", LINE_META.china.color], work: ["著作线", "var(--err)"]
+  };
   return `
     <div class="sync-wrap">
-      <div class="sync-row sync-head">
+      <div class="sync-row sync-head" style="--cols:${LINE_ORDER.length}">
         <div class="sync-era">年代</div>
-        <div class="sync-cell"><span class="dual-head" style="--dc:var(--accent)">理论线</span></div>
-        <div class="sync-cell"><span class="dual-head" style="--dc:var(--warn)">企业线</span></div>
-        <div class="sync-cell"><span class="dual-head" style="--dc:var(--info)">模式线</span></div>
-        <div class="sync-cell"><span class="dual-head" style="--dc:var(--ok)">组织线</span></div>
-        <div class="sync-cell"><span class="dual-head" style="--dc:var(--err)">著作线</span></div>
+        ${LINE_ORDER.map(k =>
+          `<div class="sync-cell"><span class="dual-head" style="--dc:${HEAD_LABEL[k][1]}">${HEAD_LABEL[k][0]}</span></div>`).join("")}
       </div>
       ${rows}
     </div>`;
@@ -721,6 +788,27 @@ function renderElFilter() {
     Object.entries(ELEMENTS).map(([k, v]) => [k, v.name, v.color]));
   return items.map(([k, name, color]) =>
     `<button class="chip ${k === modelEl ? "active" : ""}" data-el="${k}" style="--chip-c:${color}">${name}</button>`).join("");
+}
+
+function chinaItem(c, i) {
+  const idx = CHINA_LIST.indexOf(c);
+  const relChips = (c.rel || []).map(key => {
+    const t = THEORIES.find(x => x.key === key);
+    return t ? `<button class="rel-chip" data-rel="${THEORIES.indexOf(t)}">${key}</button>` : "";
+  }).join("");
+  return `
+  <div class="tl-item china" style="--sc:${LINE_META.china.color}; --i:${Math.min(i, 14)}" data-chidx="${idx}">
+    <div class="tl-card">
+      <div class="tl-top">
+        <span class="tl-year">${c.year}</span>
+        <span class="tl-key">${c.company} · ${c.event} ${resoBadge(c.company)}</span>
+        ${isReadK("h:" + idx) ? `<span class="read-mark">✓ 已读</span>` : ""}
+        <span class="school-tag">中国对照</span>
+      </div>
+      <p class="tl-brief">${c.brief}</p>
+      ${relChips ? `<div class="rel-chips">关联理论 ${relChips}</div>` : ""}
+    </div>
+  </div>`;
 }
 
 function renderTimeline() {
@@ -747,10 +835,18 @@ function renderTimeline() {
     $("#tl-body").innerHTML = withEras(mlist, modelItem);
     return;
   }
+  if (tlMode === "china") {
+    $("#tl-count").textContent = `共 ${CHINA_LIST.length} 个中国现场 · 与西方线对照阅读`;
+    $("#tl-body").innerHTML = withEras(CHINA_LIST, chinaItem);
+    return;
+  }
   const list = THEORIES.filter(t => tlSchool === "all" || t.school === tlSchool);
   if (tlMode === "both") {
     filterRow.style.display = "";
-    $("#tl-count").textContent = `${list.length} 理论 × ${COMPANIES.length} 企业 × ${MODELS.length} 模式 × ${ORGS.length} 组织 × ${list.length} 著作 · 同年代对齐`;
+    const parts = [`${list.length} 理论`, `${COMPANIES.length} 企业`, `${MODELS.length} 模式`, `${ORGS.length} 组织`];
+    if (HAS_CHINA) parts.push(`${CHINA_LIST.length} 中国`);
+    parts.push(`${list.length} 著作`);
+    $("#tl-count").textContent = parts.join(" × ") + " · 同年代对齐";
     $("#tl-body").innerHTML = renderSync(list);
     return;
   }
@@ -781,6 +877,8 @@ $("#tl-body").addEventListener("click", (e) => {
   if (mitem) { showModel(MODELS[Number(mitem.dataset.midx)]); return; }
   const oitem = e.target.closest(".tl-item.org, .mini.org");
   if (oitem) { showOrg(ORGS[Number(oitem.dataset.oidx)]); return; }
+  const hitem = e.target.closest(".tl-item.china, .mini.china");
+  if (hitem) { showChina(CHINA_LIST[Number(hitem.dataset.chidx)]); return; }
   const witem = e.target.closest(".mini.work");
   if (witem) { showDetail(THEORIES[Number(witem.dataset.widx)]); return; }
   const item = e.target.closest(".tl-item, .mini.theory");
@@ -884,7 +982,8 @@ function cardData(line) {
     title: t.key, sub: `${t.person} · ${t.work}`, brief: t.brief,
     color: SCHOOLS[t.school].color, tag: SCHOOLS[t.school].name,
     search: [t.person, t.work, t.key, t.brief, SCHOOLS[t.school].name].join(" ") }));
-  const arr = line === "company" ? COMPANIES : line === "model" ? MODELS : ORGS;
+  const arr = line === "company" ? COMPANIES : line === "model" ? MODELS
+    : line === "china" ? CHINA_LIST : ORGS;
   return arr.map(c => ({ kind: line, o: c, year: c.year,
     title: `${c.company} · ${c.event}`, sub: LINE_META[line].tag +
       (line === "model" && c.el && ELEMENTS[c.el] ? " · " + ELEMENTS[c.el].name : ""),
@@ -896,6 +995,7 @@ function openCard(kind, o) {
   if (kind === "theory") showDetail(o);
   else if (kind === "company") showCompany(o);
   else if (kind === "model") showModel(o);
+  else if (kind === "china") showChina(o);
   else showOrg(o);
 }
 
@@ -906,9 +1006,8 @@ function renderCards() {
   schoolRow.style.display = cardLine === "theory" ? "" : "none";
   elRow.style.display = cardLine === "model" ? "" : "none";
 
-  let pool = cardLine === "all"
-    ? ["theory", "company", "model", "org"].flatMap(cardData)
-    : cardData(cardLine);
+  const ALL_LINES = ["theory", "company", "model", "org"].concat(HAS_CHINA ? ["china"] : []);
+  let pool = cardLine === "all" ? ALL_LINES.flatMap(cardData) : cardData(cardLine);
 
   pool = pool.filter(c => {
     if (cardLine === "theory" && cardSchool !== "all" && c.o.school !== cardSchool) return false;

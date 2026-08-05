@@ -100,7 +100,11 @@ body {
   font-size: 16px;
   line-height: 1.68;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  /* 跑马灯用 calc(50% - 50vw) 出血，而 100vw 含滚动条宽度，会溢出几像素。
+     用 clip 而非 hidden：hidden 会把 overflow 传播到 viewport、让 body 变成滚动容器，
+     既弄乱 scrollTop 行为，也会影响 sync 表头的 position:sticky。 */
+  overflow-x: hidden;        /* 老浏览器兜底 */
+  overflow-x: clip;          /* 现代浏览器：只裁剪，不建滚动容器 */
   transition: background-color .25s ease, color .25s ease;
 }
 
@@ -297,7 +301,9 @@ main { max-width: 1280px; margin: 0 auto; padding: 40px 40px 96px; }
 
 /* ---------- 跑马灯 ---------- */
 .marquee {
-  margin: 28px calc(50% - 50vw); padding: 14px 0;
+  /* 出血到视口两侧。100vw 含滚动条宽度，故减去 --sbw（由 app.js 实测写入）补偿，
+     否则会产生等于滚动条宽度的横向溢出。 */
+  margin: 28px calc(50% - 50vw + var(--sbw, 0px) / 2); padding: 14px 0;
   border-top: 1px solid var(--bdr-soft); border-bottom: 1px solid var(--bdr-soft);
   overflow: hidden; white-space: nowrap;
 }
@@ -336,6 +342,16 @@ main { max-width: 1280px; margin: 0 auto; padding: 40px 40px 96px; }
   font-size: 12px; color: var(--on-deep-dim);
   letter-spacing: .08em; text-transform: uppercase;
 }
+
+/* 中国对照线的来源说明：与书里的内容视觉区分 */
+.about-note {
+  margin-top: 14px; padding: 12px 14px;
+  border-left: 3px solid #E05A2B;
+  background: rgba(224, 90, 43, .06);
+  border-radius: 0 10px 10px 0;
+  font-size: 14px; line-height: 1.7;
+}
+.about-note em { font-style: normal; color: #E05A2B; font-weight: 600; }
 
 /* ---------- 六幕商业史 ---------- */
 .acts-section { margin-top: 40px; }
@@ -497,7 +513,7 @@ main { max-width: 1280px; margin: 0 auto; padding: 40px 40px 96px; }
   border-bottom: 1px solid var(--bdr-soft);
   align-items: start;
 }
-.sync-row.sync-head { grid-template-columns: minmax(112px, .72fr) repeat(5, minmax(0, 1fr)); }
+.sync-row.sync-head { grid-template-columns: minmax(112px, .72fr) repeat(var(--cols, 5), minmax(0, 1fr)); }
 .sync-row.sync-head { border-bottom: 1px solid var(--bdr); padding-bottom: 12px; position: sticky; top: 64px; background: var(--bg); z-index: 2; }
 .sync-era {
   color: var(--fg3); padding: 10px 10px 10px 0;
@@ -524,6 +540,7 @@ main { max-width: 1280px; margin: 0 auto; padding: 40px 40px 96px; }
 .mini.company { --mc: var(--warn); }
 .mini.model { --mc: var(--info); }
 .mini.work { --mc: var(--err); }
+.mini.china { --mc: #E05A2B; }
 .mini-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
 .mini-y { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--mc); }
 .mini-t { font-size: 13.5px; font-weight: 600; color: var(--fg); }
@@ -1459,7 +1476,8 @@ html[data-theme="dark"] .q-explain { color: #f0cf92; }
   border: 1px solid var(--bdr); border-radius: 6px; padding: 5px 14px;
   background: var(--bg);
 }
-.tl-item.company .era-divider, .tl-item.model .era-divider, .tl-item.org .era-divider { margin-left: -30px; }
+.tl-item.company .era-divider, .tl-item.model .era-divider, .tl-item.org .era-divider,
+.tl-item.china .era-divider { margin-left: -30px; }
 
 /* ---------- 弹层启示段 ---------- */
 .m-sec.lesson p { color: var(--fg); font-weight: 500; }

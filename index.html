@@ -85,7 +85,7 @@
       <div class="hero-text">
         <p class="hero-kicker">Business Chronicle · 五本书 × 五条时间线</p>
         <h1>百年商业史,<br><em>五本书读懂</em>.</h1>
-        <p class="hero-sub">从美第奇的汇票到 ChatGPT —— <b id="hs-t">34</b> 个理论节点、<b id="hs-c">49</b> 个企业现场、<b id="hs-m">29</b> 种商业模式、<b id="hs-o">20</b> 次组织进化与 <b id="hs-w">34</b> 本经典著作,五本书、五条线叠在一起,让百年商业史 <em>规律自现</em>.</p>
+        <p class="hero-sub">从美第奇的汇票到 ChatGPT —— <b id="hs-t">34</b> 个理论节点、<b id="hs-c">49</b> 个企业现场、<b id="hs-m">29</b> 种商业模式、<b id="hs-o">20</b> 次组织进化<span id="hs-china-frag">、<b id="hs-ch">24</b> 个中国现场</span>与 <b id="hs-w">34</b> 本经典著作,五本书、六条线叠在一起,让百年商业史 <em>规律自现</em>.</p>
         <div class="hero-actions">
           <button class="btn primary" data-goto="timeline">进入时间线</button>
           <button class="btn ghost" data-goto="quiz">先测一测</button>
@@ -130,13 +130,14 @@
           <li><b>《管理百年》</b>(克雷纳)看“组织”——组织形态与管理实践的百年进化;</li>
           <li><b>《新经营学》</b>(三谷宏治)给一副“透镜”——目标/价值/能力/收益四要素,看透任何一门生意。</li>
         </ul>
+        <p class="about-note"><b>第六条线:中国对照。</b>那五本书都是西方与日本视角。我们另补一条中国现场线——从票号到大模型,与前五条线并置。<em>它不来自那五本书,是站方补的对照</em>;放进来不是为了比高下,是为了看同一个商业结构在不同制度环境里长成了什么形状。</p>
       </div>
       <div class="card reveal">
         <div class="eyebrow">How to Explore</div>
         <h3>怎么用这个站</h3>
         <div class="steps">
-          <div class="step"><div class="step-n" style="--sb:rgba(90,79,230,.12);--st:#5A4FE6">01</div><div><div class="st-t">五轨时间线</div><div class="st-d">理论 × 企业 × 模式 × 组织 × 著作,五本书叠在一起看规律。</div></div></div>
-          <div class="step"><div class="step-n" style="--sb:rgba(216,71,79,.10);--st:#D8474F">02</div><div><div class="st-t">节点卡片库</div><div class="st-d">四类现场节点 + 著作维度,切换、筛选、搜索。</div></div></div>
+          <div class="step"><div class="step-n" style="--sb:rgba(90,79,230,.12);--st:#5A4FE6">01</div><div><div class="st-t">六轨时间线</div><div class="st-d">理论 × 企业 × 模式 × 组织 × 中国 × 著作,同年代对齐着看规律。</div></div></div>
+          <div class="step"><div class="step-n" style="--sb:rgba(216,71,79,.10);--st:#D8474F">02</div><div><div class="st-t">节点卡片库</div><div class="st-d">五类现场节点 + 著作维度,切换、筛选、搜索。</div></div></div>
           <div class="step"><div class="step-n" style="--sb:rgba(183,122,34,.12);--st:#B77A22">03</div><div><div class="st-t">学派之争 × 关系图谱</div><div class="st-d">两派正面对比,谱系图看谁影响谁。</div></div></div>
           <div class="step"><div class="step-n" style="--sb:rgba(14,156,107,.12);--st:#0E9C6B">04</div><div><div class="st-t">以史鉴今</div><div class="st-d">七条百年规律,把历史读成对未来的判断。</div></div></div>
           <div class="step"><div class="step-n" style="--sb:rgba(44,116,214,.12);--st:#2C74D6">05</div><div><div class="st-t">测验与交流区</div><div class="st-d">10 题自测检验掌握,留言区写下读书心得。</div></div></div>
@@ -148,6 +149,7 @@
             <div class="lp-line"><span style="--lc:var(--warn)">企业</span><div class="lp-bar"><i id="lp-c" style="background:var(--warn)"></i></div><b id="lp-cn">0/49</b></div>
             <div class="lp-line"><span style="--lc:var(--info)">模式</span><div class="lp-bar"><i id="lp-m" style="background:var(--info)"></i></div><b id="lp-mn">0/29</b></div>
             <div class="lp-line"><span style="--lc:var(--ok)">组织</span><div class="lp-bar"><i id="lp-o" style="background:var(--ok)"></i></div><b id="lp-on">0/20</b></div>
+            <div class="lp-line" id="lp-line-h"><span style="--lc:#E05A2B">中国</span><div class="lp-bar"><i id="lp-h" style="background:#E05A2B"></i></div><b id="lp-hn">0/24</b></div>
           </div>
         </div>
       </div>
@@ -166,7 +168,8 @@
       <button data-mode="company">企业线</button>
       <button data-mode="model">模式线</button>
       <button data-mode="org">组织线</button>
-      <button data-mode="both" class="active">五轨对照</button>
+      <button data-mode="china" id="tl-mode-china">中国对照</button>
+      <button data-mode="both" class="active" id="tl-mode-all">六轨对照</button>
     </div>
     <div class="tl-filter" id="tl-filter"></div>
     <div class="tl-filter el-filter" id="el-filter"></div>
@@ -194,13 +197,14 @@
     <div class="page-head">
       <div class="page-head-en">Knowledge Cards</div>
       <h2>节点<em>卡片库</em></h2>
-      <p>四类现场节点与著作维度:切换线索、按学派/要素筛选,或输入关键词搜索</p>
+      <p>五类现场节点与著作维度:切换线索、按学派/要素筛选,或输入关键词搜索</p>
     </div>
     <div class="tl-mode" id="card-mode">
       <button data-cline="theory" class="active">理论</button>
       <button data-cline="company">企业</button>
       <button data-cline="model">模式</button>
       <button data-cline="org">组织</button>
+      <button data-cline="china" id="card-mode-china">中国</button>
       <button data-cline="all">全部</button>
     </div>
     <div class="cards-toolbar">

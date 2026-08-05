@@ -13,7 +13,7 @@ const root = path.join(__dirname, "..");
 const code = fs.readFileSync(path.join(root, "data.v22.js"), "utf8");
 const ctx = {};
 vm.createContext(ctx);
-vm.runInContext(code + "\n;globalThis.__EXPORT__={THEORIES,COMPANIES,MODELS,ORGS,GLOSSARY,PEOPLE,ERAS,QUIZ,SCENARIOS,GRAPH_EDGES,ELEMENTS,SCHOOLS,THEORY_DETAILS,THEORY_GUIDES,THEORY_LIMITS};", ctx);
+vm.runInContext(code + "\n;globalThis.__EXPORT__={THEORIES,COMPANIES,MODELS,ORGS,GLOSSARY,PEOPLE,ERAS,QUIZ,SCENARIOS,GRAPH_EDGES,ELEMENTS,SCHOOLS,THEORY_DETAILS,THEORY_GUIDES,THEORY_LIMITS,CHINA:(typeof CHINA!=='undefined'?CHINA:[]),ACTS:(typeof ACTS!=='undefined'?ACTS:[])};", ctx);
 const D = ctx.__EXPORT__;
 
 const summaryOnly = process.argv.includes("--summary");
@@ -24,14 +24,15 @@ const LINES = [
   ["理论线 THEORIES", D.THEORIES],
   ["企业线 COMPANIES", D.COMPANIES],
   ["模式线 MODELS", D.MODELS],
-  ["组织线 ORGS", D.ORGS]
+  ["组织线 ORGS", D.ORGS],
+  ["中国线 CHINA", D.CHINA]
 ];
 
 /* ---------- 规模快照 ---------- */
 const deepCount = (arr) => arr.filter(o => o.deep).length;
 const summary = [
-  `理论 ${D.THEORIES.length} · 企业 ${D.COMPANIES.length} · 模式 ${D.MODELS.length} · 组织 ${D.ORGS.length}`,
-  `决策现场层 deep 覆盖：企业 ${deepCount(D.COMPANIES)}/${D.COMPANIES.length} · 模式 ${deepCount(D.MODELS)}/${D.MODELS.length} · 组织 ${deepCount(D.ORGS)}/${D.ORGS.length}`,
+  `理论 ${D.THEORIES.length} · 企业 ${D.COMPANIES.length} · 模式 ${D.MODELS.length} · 组织 ${D.ORGS.length} · 中国 ${D.CHINA.length} · 六幕 ${D.ACTS.length}`,
+  `决策现场层 deep 覆盖：企业 ${deepCount(D.COMPANIES)}/${D.COMPANIES.length} · 模式 ${deepCount(D.MODELS)}/${D.MODELS.length} · 组织 ${deepCount(D.ORGS)}/${D.ORGS.length} · 中国 ${deepCount(D.CHINA)}/${D.CHINA.length}`,
   `词典 ${D.GLOSSARY.length} · 人物 ${D.PEOPLE.length} · 时代 ${D.ERAS.length} · 测验 ${D.QUIZ.length} · 情景 ${D.SCENARIOS.length} · 图谱边 ${D.GRAPH_EDGES.length}`,
   `理论深度：details ${D.THEORY_DETAILS.length} · guides ${Object.keys(D.THEORY_GUIDES).length} · limits ${Object.keys(D.THEORY_LIMITS).length}`
 ];
@@ -80,18 +81,27 @@ LINES.slice(1).forEach(([name, arr]) => {
 });
 
 /* ---------- 4. 年份合理性与排序 ---------- */
+// ⚠️ THEORIES 的顺序不可重排：THEORY_DETAILS 按【索引】与它一一对应，
+//    调换 THEORIES 顺序会让全部理论的「经典案例/现实应用」错位到别的理论上。
+//    因此这里只对没有索引依赖的数组做排序提醒。
 LINES.forEach(([name, arr]) => {
   arr.forEach(o => {
     if (typeof o.year !== "number" || o.year < 1300 || o.year > 2030) {
       errors.push(`${name} ${o.company || o.key}：年份异常 ${o.year}`);
     }
   });
+  if (name.startsWith("理论线")) return;   // 见上方警告
   for (let i = 1; i < arr.length; i++) {
     if (arr[i].year < arr[i - 1].year) {
       warns.push(`${name}：第 ${i + 1} 条（${arr[i].year} ${arr[i].company || arr[i].key}）年份早于前一条，数组未按年排序`);
     }
   }
 });
+
+/* ---------- 4b. THEORIES 与 THEORY_DETAILS 的索引对应必须完好 ---------- */
+if (D.THEORY_DETAILS.length !== D.THEORIES.length) {
+  errors.push(`THEORY_DETAILS(${D.THEORY_DETAILS.length}) 与 THEORIES(${D.THEORIES.length}) 长度不一致——两者按索引一一对应，长度必须相等`);
+}
 
 /* ---------- 5. 模式线 el 必须是四要素之一 ---------- */
 D.MODELS.forEach(m => {
@@ -109,6 +119,22 @@ D.SCENARIOS.forEach((s, i) => {
     errors.push(`情景题第 ${i + 1} 题：answer 索引越界`);
   }
 });
+
+/* ---------- 6b. 六幕转折点必须能定位到真实节点 ---------- */
+if (D.ACTS.length) {
+  const allNames = new Set([
+    ...D.THEORIES.map(t => t.key),
+    ...[...D.COMPANIES, ...D.MODELS, ...D.ORGS, ...D.CHINA].map(o => o.company)
+  ]);
+  D.ACTS.forEach(a => {
+    (a.pivot || []).forEach(p => {
+      if (!allNames.has(p)) errors.push(`六幕 ${a.no} ${a.title}：转折点 "${p}" 找不到对应节点`);
+    });
+    ["no", "span", "title", "thesis", "body", "ask"].forEach(f => {
+      if (!a[f]) errors.push(`六幕 ${a.no || "?"}：缺字段 ${f}`);
+    });
+  });
+}
 
 /* ---------- 7. 图谱边端点必须存在 ---------- */
 D.GRAPH_EDGES.forEach(e => {

@@ -10,3 +10,7 @@
 - 2026-08-04: 不复用 qiuyiwu.com 其它站点的百度统计 ID。理由：一个 ID 对应一个站点，复用会把两站数据混在一起。index.html 中留注释占位，待用户申请新 ID。Confidence: high.
 - 2026-08-04: 新增 `llms-full.txt`（全站内容纯文本导出，186KB）作为 GEO 主要抓取入口。理由：本站内容由 JS 渲染，LLM 爬虫不执行 JS，没有这个文件等于对生成式引擎完全隐身。由 tools/build-seo.js 从 data 生成，部署脚本自动重建，不会与内容脱节。Confidence: high.
 - 2026-08-04: 部署脚本内置数据校验闸门（validate 不过则中止部署）。理由：内容站的回归风险在数据不在代码。Confidence: high.
+- 2026-08-04: 中国线作为第六条「对照线」独立成线，而非并入既有四线。理由：独立才能形成中西并置对照；同时在 UI 上明确标注「站方补充，不来自那五本书」，不冒充源书内容。Confidence: high.
+- 2026-08-04: 中国线与模式线允许同一公司重复出现（阿里1999/淘宝2003/小米）。理由：视角不同（模式线讲结构，中国线讲中西对照），且 RESO 跨线共振机制会把两者串起来，重复反而成为特性。Confidence: medium，待用户确认。
+- 2026-08-04: **THEORIES 数组顺序不可重排**——THEORY_DETAILS 按索引与其一一对应，重排会让全部理论的案例/应用错位。已在 tools/validate.js 中加注释与长度一致性校验，并跳过该数组的排序提醒。MODELS/ORGS 无此依赖，已按年份排好。Confidence: high。（本次曾误重排 THEORIES，已回滚并验证索引对应完好。）
+- 2026-08-04: body 的 overflow-x 由 hidden 改为 clip，并给跑马灯的 100vw 出血补偿滚动条宽度（--sbw，app.js 实测写入）。理由：hidden 会把 overflow 传播到 viewport、让 body 变成滚动容器，既弄乱 scrollTop 也影响 sticky 表头。Confidence: high.
