@@ -14,3 +14,4 @@
 - 2026-08-04: 中国线与模式线允许同一公司重复出现（阿里1999/淘宝2003/小米）。理由：视角不同（模式线讲结构，中国线讲中西对照），且 RESO 跨线共振机制会把两者串起来，重复反而成为特性。Confidence: medium，待用户确认。
 - 2026-08-04: **THEORIES 数组顺序不可重排**——THEORY_DETAILS 按索引与其一一对应，重排会让全部理论的案例/应用错位。已在 tools/validate.js 中加注释与长度一致性校验，并跳过该数组的排序提醒。MODELS/ORGS 无此依赖，已按年份排好。Confidence: high。（本次曾误重排 THEORIES，已回滚并验证索引对应完好。）
 - 2026-08-04: body 的 overflow-x 由 hidden 改为 clip，并给跑马灯的 100vw 出血补偿滚动条宽度（--sbw，app.js 实测写入）。理由：hidden 会把 overflow 传播到 viewport、让 body 变成滚动容器，既弄乱 scrollTop 也影响 sticky 表头。Confidence: high.
+- 2026-08-04: 新增可选 `voice: {text, from}` 字段作为「个人判断层」，与史实内容在数据结构与视觉上双重区分，`from`（出处）由 validate.js 强制必填。理由：神脑素材是本站差异化来源，但主理人观点绝不能混进史实叙述；带出处才可回溯、可证伪。首批挂 5 个节点。Confidence: high.

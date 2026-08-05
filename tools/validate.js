@@ -77,6 +77,11 @@ LINES.slice(1).forEach(([name, arr]) => {
     Object.keys(o.deep).forEach(k => {
       if (!DEEP_FIELDS.includes(k)) errors.push(`${name} ${o.year} ${o.company}：deep 有未知字段 ${k}`);
     });
+    // 个人判断层：必须带出处，否则无法与史实区分
+    if (o.voice) {
+      if (!o.voice.text) errors.push(`${name} ${o.year} ${o.company}：voice 缺 text`);
+      if (!o.voice.from) errors.push(`${name} ${o.year} ${o.company}：voice 缺 from（出处必填，个人观点必须可回溯）`);
+    }
   });
 });
 

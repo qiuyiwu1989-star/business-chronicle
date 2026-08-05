@@ -88,6 +88,7 @@ SITE_LINES.forEach(([title, arr]) => {
       L.push(`- 后续命运：${o.deep.fate}`);
       L.push(`- 今日回声：${o.deep.echo}`);
     }
+    if (o.voice) L.push(`- 邱懿武的判断（站方主理人观点，非史实）：${o.voice.text}${o.voice.from ? `（出处：${o.voice.from}）` : ""}`);
     if (o.rel && o.rel.length) L.push(`- 关联理论：${o.rel.join("、")}`);
     L.push("");
   });

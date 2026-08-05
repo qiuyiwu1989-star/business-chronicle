@@ -371,6 +371,17 @@ function guideCard(title, text, tone = "") {
   return text ? `<div class="guide-card ${tone}"><b>${title}</b><p>${text}</p></div>` : "";
 }
 
+/* ---------- 个人判断层:站方主理人的观点,必须与史实明确区分并带出处 ---------- */
+function voiceSection(v) {
+  return `<div class="m-sec">
+    <div class="m-voice">
+      <span class="m-voice-tag">邱懿武的判断</span>
+      <p>${v.text}</p>
+      ${v.from ? `<div class="m-voice-from">${v.from}</div>` : ""}
+    </div>
+  </div>`;
+}
+
 /* ---------- 决策现场层(spec 001):有 deep 的节点用真实史实替代通用边界段 ---------- */
 function decisionSection(dp) {
   return `<div class="m-sec"><h4>决策现场</h4>
@@ -495,6 +506,7 @@ function deepSections(o, briefTitle, kind) {
       </div>
     </div>
     ${o.deep ? decisionSection(o.deep) : boundarySection(kind, o)}
+    ${o.voice ? voiceSection(o.voice) : ""}
     ${rel ? `<div class="m-sec"><h4>理论关联解释</h4><div class="rel-card-grid">${rel}</div></div>` : ""}`;
 }
 
