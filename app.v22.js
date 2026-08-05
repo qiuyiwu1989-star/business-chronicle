@@ -156,6 +156,7 @@ function updateProgress() {
         <h4>${a.title}</h4>
         <p class="act-thesis">${a.thesis}</p>
         <p class="act-body">${a.body}</p>
+        ${a.cn ? `<div class="act-cn"><span>同期的中国</span>${a.cn}</div>` : ""}
         <div class="act-ask"><span>留给你的问题</span>${a.ask}</div>
         <div class="act-pivot">${a.pivot.map(p =>
           `<button class="act-chip" data-pivot="${p}">${p}</button>`).join("")}</div>

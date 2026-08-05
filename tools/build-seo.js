@@ -103,6 +103,7 @@ if (D.ACTS.length) {
     L.push(`### 第 ${a.no} 幕 ｜ ${a.title}（${a.span}）`);
     L.push(`- 主线：${a.thesis}`);
     L.push(`- 导读：${a.body}`);
+    if (a.cn) L.push(`- 同期的中国：${a.cn}`);
     L.push(`- 留给读者的问题：${a.ask}`);
     L.push(`- 转折点：${(a.pivot || []).join("、")}`);
     L.push("");
