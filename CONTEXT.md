@@ -69,8 +69,13 @@
     rival,  // 同时代的对照：做相反选择者及其结局
     fate,   // 后续命运：优势如何被绕过或反噬
     echo    // 今日回声：同一结构的当代对应
+  },
+  voice: { // ★ 可选·个人判断层：邱懿武本人的观点，来自神脑转写素材
+    text,  // 他的判断（转述，不杜撰引语）
+    from   // 出处，**必填**，validate.js 会校验——个人观点必须可回溯
   } }
 ```
+**`deep` 与 `voice` 的边界不能混**：deep 是史实（只搬运不发明），voice 是主理人观点（一家之言）。渲染上 voice 有独立的紫色区块与「邱懿武的判断」标签，llms-full 导出时也标注「站方主理人观点，非史实」。同理，以史鉴今页里的 `.insight-voice` 也是这一层。
 理论线另有三层深度：`THEORY_DETAILS`（框架/案例/应用）、`THEORY_GUIDES`（机制/今天怎么用/误区/反思）、`THEORY_LIMITS`（失效条件/反例）。
 
 其余数据：`ACTS`(六幕叙事层) `GLOSSARY`(42 词条) `PEOPLE`(14 人) `ERAS`(10 个时代) `QUIZ`(10 题) `SCENARIOS`(8 情景题) `GRAPH_EDGES`(22 条谱系边) `SCHOOL_COMPARE`(学派之争)。
