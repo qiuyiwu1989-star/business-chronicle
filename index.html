@@ -742,18 +742,19 @@
   data-api-base-url="https://plugin.apps.zaowuyun.com"
   data-locale="zh-CN"
 ></script>
-<!-- 百度统计：到 tongji.baidu.com 新建站点 shangye.qiuyiwu.com，把拿到的 ID 填进下面并取消注释。
-     注意不要复用 qiuyiwu.com 其它站点的 ID，否则两站数据会混在一起。
+<!-- 百度统计：复用 qiuyiwu.com 主站的统计 ID（用户 2026-08-05 指定）。
+     多个子站共用一个 ID，数据会汇总在同一站点下；下面用自定义变量标记站名，
+     在报表的「访客属性 → 自定义变量」里可以把本站的数据单独筛出来。 -->
 <script>
 var _hmt = _hmt || [];
+_hmt.push(['_setCustomVar', 1, 'site', 'shangye-business-chronicle', 3]);
 (function() {
   var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?在此填入你的统计ID";
+  hm.src = "https://hm.baidu.com/hm.js?e83757828db0e57520651bc1be79715c";
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
--->
 <script>
 /* PWA：注册 Service Worker，可安装 + 离线访问 */
 if ("serviceWorker" in navigator && location.protocol === "https:") {
