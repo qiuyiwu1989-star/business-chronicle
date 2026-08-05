@@ -4,7 +4,7 @@ const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
 /* ---------- 页面切换 ---------- */
-const KNOWLEDGE_PANELS = ["cards", "motifs", "books", "glossary", "people", "versus"];
+const KNOWLEDGE_PANELS = ["cards", "motifs", "books", "glossary", "people", "versus", "method"];
 
 function showKnowledgePanel(name, opts) {
   if (!KNOWLEDGE_PANELS.includes(name)) return;

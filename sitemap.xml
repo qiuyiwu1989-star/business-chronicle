@@ -25,6 +25,12 @@
     <priority>0.85</priority>
   </url>
   <url>
+    <loc>https://shangye.qiuyiwu.com/#method</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://shangye.qiuyiwu.com/#graph</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
