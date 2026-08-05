@@ -518,6 +518,12 @@ function showDetail(t, opts) {
     }).join("")}</div></div>` : ""}
     ${d.case ? `<div class="m-sec"><h4>经典案例</h4><p>${d.case}</p></div>` : ""}
     ${d.use ? `<div class="m-sec"><h4>现实应用</h4><p>${d.use}</p></div>` : ""}
+    ${d.rival || d.fate ? `<div class="m-sec"><h4>对照与后续命运</h4>
+      <div class="limit-grid">
+        ${guideCard("同时代的对照", d.rival, "warn")}
+        ${guideCard("后续命运", d.fate, "danger")}
+      </div>
+    </div>` : ""}
     ${t.voice ? voiceSection(t.voice) : ""}
     ${caseCards ? `<div class="m-sec"><h4>关联解释</h4><div class="rel-card-grid">${caseCards}</div></div>` : ""}
     ${relBtns ? `<div class="m-sec"><h4>相关理论</h4><div class="m-rel">${relBtns}</div></div>` : ""}

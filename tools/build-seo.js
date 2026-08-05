@@ -59,6 +59,8 @@ D.THEORIES.forEach((t, i) => {
   if (lim.counter) L.push(`- 反例提醒：${lim.counter}`);
   if (d.case) L.push(`- 经典案例：${d.case}`);
   if (d.use) L.push(`- 现实应用：${d.use}`);
+  if (d.rival) L.push(`- 同时代的对照：${d.rival}`);
+  if (d.fate) L.push(`- 后续命运：${d.fate}`);
   L.push("");
 });
 

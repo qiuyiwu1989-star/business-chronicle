@@ -16,6 +16,9 @@ vm.createContext(ctx);
 vm.runInContext(code + "\n;globalThis.__EXPORT__={THEORIES,COMPANIES,MODELS,ORGS,GLOSSARY,PEOPLE,ERAS,QUIZ,SCENARIOS,GRAPH_EDGES,ELEMENTS,SCHOOLS,THEORY_DETAILS,THEORY_GUIDES,THEORY_LIMITS,CHINA:(typeof CHINA!=='undefined'?CHINA:[]),ACTS:(typeof ACTS!=='undefined'?ACTS:[])};", ctx);
 const D = ctx.__EXPORT__;
 
+// 直接引语检测（多处使用，须在首个使用点之前定义）
+const QUOTE_RE = /[""]([^""]{8,})[""]\s*[，。]/;
+
 const summaryOnly = process.argv.includes("--summary");
 const errors = [];
 const warns = [];
@@ -34,7 +37,8 @@ const summary = [
   `理论 ${D.THEORIES.length} · 企业 ${D.COMPANIES.length} · 模式 ${D.MODELS.length} · 组织 ${D.ORGS.length} · 中国 ${D.CHINA.length} · 六幕 ${D.ACTS.length}`,
   `决策现场层 deep 覆盖：企业 ${deepCount(D.COMPANIES)}/${D.COMPANIES.length} · 模式 ${deepCount(D.MODELS)}/${D.MODELS.length} · 组织 ${deepCount(D.ORGS)}/${D.ORGS.length} · 中国 ${deepCount(D.CHINA)}/${D.CHINA.length}`,
   `词典 ${D.GLOSSARY.length} · 人物 ${D.PEOPLE.length} · 时代 ${D.ERAS.length} · 测验 ${D.QUIZ.length} · 情景 ${D.SCENARIOS.length} · 图谱边 ${D.GRAPH_EDGES.length}`,
-  `理论深度：details ${D.THEORY_DETAILS.length} · guides ${Object.keys(D.THEORY_GUIDES).length} · limits ${Object.keys(D.THEORY_LIMITS).length}`
+  `理论深度：details ${D.THEORY_DETAILS.length} · guides ${Object.keys(D.THEORY_GUIDES).length} · limits ${Object.keys(D.THEORY_LIMITS).length}`,
+  `理论对照层：rival ${D.THEORY_DETAILS.filter(d => d && d.rival).length}/${D.THEORY_DETAILS.length} · fate ${D.THEORY_DETAILS.filter(d => d && d.fate).length}/${D.THEORY_DETAILS.length}`
 ];
 if (summaryOnly) { console.log(summary.join("\n")); process.exit(0); }
 
@@ -125,6 +129,19 @@ D.SCENARIOS.forEach((s, i) => {
   }
 });
 
+/* ---------- 5b. 理论线对照层（spec 004）：长度与引语红线 ---------- */
+D.THEORY_DETAILS.forEach((d, i) => {
+  const t = D.THEORIES[i];
+  if (!d || !t) return;
+  ["rival", "fate"].forEach(f => {
+    const v = d[f];
+    if (!v) { warns.push(`理论线 ${t.year} ${t.key}：details 缺 ${f}（spec 004 要求补齐）`); return; }
+    if (v.length < 30) warns.push(`理论线 ${t.key}：details.${f} 偏短（${v.length} 字）`);
+    if (v.length > 110) warns.push(`理论线 ${t.key}：details.${f} 偏长（${v.length} 字）`);
+    if (QUOTE_RE.test(v)) warns.push(`理论线 ${t.key}：details.${f} 疑似含直接引语，请确认非杜撰`);
+  });
+});
+
 /* ---------- 6b. 六幕转折点必须能定位到真实节点 ---------- */
 if (D.ACTS.length) {
   const allNames = new Set([
@@ -149,7 +166,6 @@ D.GRAPH_EDGES.forEach(e => {
 });
 
 /* ---------- 8. 内容红线：直接引语检测 ---------- */
-const QUOTE_RE = /[""]([^""]{8,})[""]\s*[，。]/;
 LINES.slice(1).forEach(([name, arr]) => {
   arr.forEach(o => {
     if (!o.deep) return;
