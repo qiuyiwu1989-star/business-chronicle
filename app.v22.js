@@ -1518,7 +1518,7 @@ updateProgress();
   if (!wrap) return;
 
   const LANES = ["found", "pos", "cap", "learn", "innov", "intel"];
-  const W = 1460, LANE_H = 112, TOP = 56, BOTTOM = 92;   // BOTTOM 加大：最后一条泳道的标签只能向下排
+  const W = 1460, LANE_H = 124, TOP = 92, BOTTOM = 196;  // 容纳最后一条泳道的四级向下标签（第四级年份在 +140）
   const X0 = 110, X1 = 1400;
   const H = TOP + LANES.length * LANE_H + BOTTOM;
   // 年份轴延到 2026，容纳正在形成中的智能学派
@@ -1575,35 +1575,43 @@ updateProgress();
   });
 
   // 标签防重叠:每条泳道内按 下1/下2/上1/上2 四层自动分配,错层标签带牵引线
+  // 每级内 name→year 相隔 14px，故层间距须 > 28px，否则下一级的名字会压上一级的年份
   const LEVELS = [
     { name: 30, year: 44 },
-    { name: 50, year: 64 },
-    { name: -42, year: -28 },
-    { name: -60, year: -46 }
+    { name: 62, year: 76 },
+    { name: -46, year: -32 },
+    { name: -78, year: -64 }
+  ];
+  // 最后一条泳道下方没有别的泳道，可以一路向下排四级；
+  // 智能学派 5 个节点全挤在 2016—2018，两级放不下会互相重叠。
+  const LEVELS_LAST = [
+    { name: 30, year: 44 },
+    { name: 62, year: 76 },
+    { name: 94, year: 108 },
+    { name: 126, year: 140 }
   ];
   const labelPlan = {};
   LANES.forEach((k, li) => {
+    const isLast = li === LANES.length - 1;
+    const table = isLast ? LEVELS_LAST : LEVELS;
     const laneNodes = nodes.filter(n => n.t.school === k).sort((a, b) => a.x - b.x);
-    const lastRight = LEVELS.map(() => -Infinity);
-    // 最后一条泳道下方没有别的泳道，标签只允许向下（level 0/1），
-    // 否则会叠进上一条泳道，让读者误以为节点属于上一个学派。
-    const allowed = li === LANES.length - 1 ? [0, 1] : LEVELS.map((_, i) => i);
+    const lastRight = table.map(() => -Infinity);
     laneNodes.forEach(n => {
       const wEst = n.short.length * 13 + 6;
       const tx = Math.min(Math.max(n.x, X0 - 20), X1 + 6);
-      let lvl = allowed[allowed.length - 1];
-      for (const i of allowed) {
+      let lvl = table.length - 1;
+      for (let i = 0; i < table.length; i++) {
         if (tx - wEst / 2 > lastRight[i] + 8) { lvl = i; break; }
       }
       lastRight[lvl] = tx + wEst / 2;
-      labelPlan[n.t.key] = { tx, lvl };
+      labelPlan[n.t.key] = { tx, lvl, table };
     });
   });
 
   // 节点
   nodes.forEach(n => {
     const plan = labelPlan[n.t.key];
-    const L = LEVELS[plan.lvl];
+    const L = (plan.table || LEVELS)[plan.lvl];
     const lx = plan.tx - n.x;
     const leader = plan.lvl !== 0
       ? `<line x1="0" y1="${L.name > 0 ? 11 : -11}" x2="${lx}" y2="${L.name + (L.name > 0 ? -11 : 11)}" class="g-leader"/>`
