@@ -1,5 +1,8 @@
 Sitemap: https://shangye.qiuyiwu.com/sitemap.xml
 
+# IndexNow key，用于增量提交 URL（Bing / Yandex / Seznam 等共用此协议）
+IndexNow: https://shangye.qiuyiwu.com/590370a6d033119ffea18a08c97bb7bd.txt
+
 # 本站页面由 JS 渲染。抓取正文请优先读取：
 # https://shangye.qiuyiwu.com/llms-full.txt   全站内容纯文本导出
 # https://shangye.qiuyiwu.com/llms.txt        内容导览

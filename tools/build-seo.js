@@ -253,7 +253,53 @@ ${views.map(([u, p, c]) => `  <url>
 `;
 fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap);
 
+/* ============ agent.json：给 Agent 读的结构化站点数据（与主站 qiuyiwu.com 做法一致）============ */
+const agent = {
+  $schema: "https://json-schema.org/draft/2020-12/schema",
+  version: "1.0",
+  updated: TODAY,
+  site: {
+    name: "商业通鉴 · 五本书里的百年商业史",
+    url: BASE + "/",
+    language: "zh-CN",
+    purpose: "把五本商业史著作叠成六条可对照的时间线，每个节点还原决策现场",
+    tagline: "不是商业史知识库，是一台练判断的机器"
+  },
+  content: {
+    total_nodes: D.THEORIES.length + D.COMPANIES.length + D.MODELS.length + D.ORGS.length + D.CHINA.length,
+    lines: [
+      { key: "theory", name: "理论线", count: D.THEORIES.length, source: "《经营战略全史》三谷宏治 + 站方补充的智能学派" },
+      { key: "company", name: "企业线", count: D.COMPANIES.length, source: "《他们创造了美国》哈罗德·埃文斯" },
+      { key: "model", name: "模式线", count: D.MODELS.length, source: "《商业模式全史》三谷宏治" },
+      { key: "org", name: "组织线", count: D.ORGS.length, source: "《管理百年》斯图尔特·克雷纳" },
+      { key: "china", name: "中国对照线", count: D.CHINA.length, source: "站方补充，不来自那五本书" }
+    ],
+    structures: {
+      decision_scene: "每个现场节点含五问：当时的局面/关键抉择/同时代的对照/后续命运/今日回声",
+      theory_depth: "每个理论节点含机制、今天怎么用、常见误区、失效条件、反例、经典案例、现实应用、同时代的对照、后续命运",
+      acts: { count: D.ACTS.length, desc: "六幕商业史叙事主线，每幕含主线论断、导读、同期的中国对照、留给读者的问题" },
+      motifs: { count: D.MOTIFS.length, desc: "母题横切索引：按商业结构而非按线组织，串联跨线节点" }
+    }
+  },
+  access: {
+    full_text: BASE + "/llms-full.txt",
+    guide: BASE + "/llms.txt",
+    sitemap: BASE + "/sitemap.xml",
+    note: "本站页面由 JS 渲染，抓取正文请用 full_text"
+  },
+  editorial: {
+    layers: ["源书整理（非原书文字摘录）", "站方补充（中国线/智能学派/六幕/母题）", "个人判断（明确标注，仅节点内补充）"],
+    red_lines: ["只搬运不发明", "不杜撰引语", "对照者必须真实", "2020 年后事实从严", "个人观点标注为个人观点", "中国线政治中立"],
+    known_caveats: BASE + "/#method",
+    source_repo: "https://github.com/qiuyiwu1989-star/business-chronicle"
+  },
+  author: { name: "邱懿武", url: "https://qiuyiwu.com/" },
+  license: { code: "MIT", content: "对公开知识的整理，转载请注明来源" }
+};
+fs.writeFileSync(path.join(root, "agent.json"), JSON.stringify(agent, null, 2));
+
 const bytes = fs.statSync(path.join(root, "llms-full.txt")).size;
 console.log(`llms-full.txt  ${(bytes / 1024).toFixed(1)} KB（${L.length} 行）`);
 console.log("llms.txt       已生成");
 console.log("sitemap.xml    已生成");
+console.log("agent.json     已生成");

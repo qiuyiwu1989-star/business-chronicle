@@ -26,7 +26,13 @@ FILES=(
   sitemap.xml
   llms.txt
   llms-full.txt
+  agent.json
   assets
+)
+
+# IndexNow / 百度站长的验证文件：文件名不固定，按模式收集
+while IFS= read -r f; do FILES+=("$(basename "$f")"); done < <(
+  find "${ROOT_DIR}" -maxdepth 1 \( -name '[0-9a-f]*.txt' -o -name 'baidu_verify_*.html' \) 2>/dev/null
 )
 
 # 部署前先跑数据校验 + 重新生成 SEO 产物，防止内容与导出文件不同步
